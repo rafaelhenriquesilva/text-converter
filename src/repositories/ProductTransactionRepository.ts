@@ -54,10 +54,9 @@ export class ProductTransactionRepository implements IProductTransactionReposito
   async deleteById(id: string): Promise<void> {
     await this.connection.delete({
       table: this.tableName,
-      where: [{
-        name: 'id',
-        value: id
-      }]
+      where: this.mappingWhereCondition({
+        id  
+      })
     })
   }
 
