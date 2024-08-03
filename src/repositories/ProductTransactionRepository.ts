@@ -1,8 +1,9 @@
 
 import { ProductTransactionEntity } from "../entities/ProductTransactionEntity"
+import { QueryField } from "../infra/database/@shared/query-interface"
 import { DatabaseConnection } from "../infra/database/database-connection"
-import { GlobalRepositoryInterface } from "../interfaces/repositories/GlobalRepositoryInterface"
-export class ProductTransactionRepository implements GlobalRepositoryInterface<ProductTransactionEntity> {
+import { IProductTransactionRepository } from "../interfaces/repositories/ProductTransaction/IProductTransactionRepository"
+export class ProductTransactionRepository implements IProductTransactionRepository {
   connection: DatabaseConnection
   tableName: string
 
@@ -10,7 +11,19 @@ export class ProductTransactionRepository implements GlobalRepositoryInterface<P
     this.connection = DatabaseConnection.getInstance()
     this.tableName = 'public.product_transaction'
   }
+ 
 
+  async findByParameters(input: Partial<ProductTransactionEntity>): Promise<ProductTransactionEntity[]> {
+    const SchemaModel = await this.connection.find({
+      table: this.tableName,
+      fields: [
+        { name: '*' }
+      ],
+      where: this.mappingWhereCondition(input)
+    })
+
+    return SchemaModel.map((row: any) => this.mapRowToEntity(row))
+  }
 
   async listAll(): Promise<ProductTransactionEntity[]> {
     const SchemaModel = await this.connection.find({
@@ -41,10 +54,9 @@ export class ProductTransactionRepository implements GlobalRepositoryInterface<P
   async deleteById(id: string): Promise<void> {
     await this.connection.delete({
       table: this.tableName,
-      where: [{
-        name: 'id',
-        value: id
-      }]
+      where: this.mappingWhereCondition({
+        id  
+      })
     })
   }
 
@@ -63,19 +75,65 @@ export class ProductTransactionRepository implements GlobalRepositoryInterface<P
     return SchemaModel.map((row: any) => this.mapRowToEntity(row))
 
   }
-  async insert(input: Partial<ProductTransactionEntity>): Promise<Partial<ProductTransactionEntity[]>> {
-    return await this.connection.insert({
-      fields:
-        [{ name: 'name', value: input.name },
-          { name: 'id_product', value: input.idProduct },
-          { name: 'product_value', value: input.productValue },
-          { name: 'transaction_date', value: input.transactionDate },
-          { name: 'id_user', value: input.idUser },
-          { name: 'id_order', value: input.idOrder },
-        ], table: this.tableName,
-      retuning: {
-        name: 'id'
+
+  mappingWhereCondition(input: Partial<ProductTransactionEntity>): QueryField[] {
+    let tableFields = [
+      {
+        name: 'id',
+        value: input.id
+      },
+      {
+        name: 'name',
+        value: input.name
+      },
+      {
+        name: 'id_user',
+        value: input.idUser
+      },
+      {
+        name: 'id_product',
+        value: input.idProduct
+      },
+      {
+        name: 'id_order',
+        value: input.idOrder
+      },
+      {
+        name: 'product_value',
+        value: input.productValue
+      },
+      {
+        name: 'transaction_date',
+        value: input.transactionDate
+      },
+      {
+        name: 'created_at',
+        value: input.createdAt
+      },
+      {
+        name: 'updated_at',
+        value: input.updatedAt
       }
+    ]
+
+    tableFields = tableFields.filter(item => item.value)
+    return tableFields
+  }
+
+  async insert(input: Partial<ProductTransactionEntity>): Promise<void> {
+    await this.connection.insert({
+      fields:
+        [
+          [
+            { name: 'name', value: input.name },
+            { name: 'id_product', value: input.idProduct },
+            { name: 'product_value', value: input.productValue },
+            { name: 'transaction_date', value: input.transactionDate },
+            { name: 'id_user', value: input.idUser },
+            { name: 'id_order', value: input.idOrder },
+          ]
+        ], 
+      table: this.tableName
     })
   } async update(input: Partial<ProductTransactionEntity>): Promise<void> {
     await this.connection.update({

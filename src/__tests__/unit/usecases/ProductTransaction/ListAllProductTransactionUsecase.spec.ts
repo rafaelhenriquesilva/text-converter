@@ -1,16 +1,16 @@
 
 import { ListAllProductTransactionUseCase } from "../../../../usecases/ProductTransaction/ListAllProductTransactionUsecase"
-import { repositoryMock } from "../../mock-repositories/repository-mock"
+import { productTransactionRepositoryMock } from "../../mock-repositories/product-transaction-repository-mock"
 
 describe('ListAllProductTransactionUseCase', () => {
   let usecase: ListAllProductTransactionUseCase
 
   beforeEach(() => {
-    usecase = new ListAllProductTransactionUseCase(repositoryMock)
+    usecase = new ListAllProductTransactionUseCase(productTransactionRepositoryMock)
   })
   it('ListAllProductTransactionUseCase handle', async() => {
     await usecase.handle()
 
-    expect(repositoryMock.listAll).toHaveBeenCalledTimes(1)
+    expect(productTransactionRepositoryMock.listAll).toHaveBeenCalledTimes(1)
   })
 })

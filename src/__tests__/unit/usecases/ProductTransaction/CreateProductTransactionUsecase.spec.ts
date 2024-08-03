@@ -1,13 +1,13 @@
 
 import { CreateProductTransactionUseCase } from "../../../../usecases/ProductTransaction/CreateProductTransactionUsecase"
 import { createProductTransactionMock } from "../../mock-entities/ProductTransaction/ProductTransaction-mock"
-import { repositoryMock } from "../../mock-repositories/repository-mock"
+import { productTransactionRepositoryMock } from "../../mock-repositories/product-transaction-repository-mock"
 
 describe('CreateProductTransactionUseCase', () => {
   let usecase: CreateProductTransactionUseCase
 
   beforeEach(() => {
-    usecase = new CreateProductTransactionUseCase(repositoryMock)
+    usecase = new CreateProductTransactionUseCase(productTransactionRepositoryMock)
   })
   it('CreateProductTransactionUseCase handle', async() => {
     const mock = createProductTransactionMock()
@@ -20,7 +20,7 @@ describe('CreateProductTransactionUseCase', () => {
       idOrder: mock.idOrder, 
 
     })
-    expect(repositoryMock.insert).toHaveBeenCalledTimes(1)
+    expect(productTransactionRepositoryMock.insert).toHaveBeenCalledTimes(1)
   })
     
 })

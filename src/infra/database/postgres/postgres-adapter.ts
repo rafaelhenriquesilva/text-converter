@@ -30,7 +30,8 @@ export default class PostgreSQLAdapter {
   }
 
   async find(input: SelectQueryInterface): Promise<any[]> {
-    return this.query(PostgresQueryAdapter.find(input))
+    const query = PostgresQueryAdapter.find(input)
+    return this.query(query)
   }
 
   async insert(input: InsertQueryInterface): Promise<any[]> {
