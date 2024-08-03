@@ -36,7 +36,7 @@ class FileConverter<T> {
 
   private parseData(data: string, fields: FieldLine[], lineLength: number): T[] {
     const lines = data.split('\n').filter(line => line.trim() !== '' && line.length === lineLength)
-    const list: T[] = []
+    const listObject: T[] = []
 
     for (const line of lines) {
       const obj: any = {}
@@ -50,10 +50,10 @@ class FileConverter<T> {
       }
 
 
-      list.push(obj)
+      listObject.push(obj)
     }
 
-    return list
+    return listObject
   }
 }
 
