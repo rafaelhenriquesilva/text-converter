@@ -8,7 +8,7 @@ export class ProductTransactionRepository implements GlobalRepositoryInterface<P
 
   constructor() {
     this.connection = DatabaseConnection.getInstance()
-    this.tableName = 'luizalabs.product_transaction'
+    this.tableName = 'public.product_transaction'
   }
 
 
