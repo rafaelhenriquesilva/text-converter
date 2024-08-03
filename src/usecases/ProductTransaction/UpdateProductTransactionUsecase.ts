@@ -1,13 +1,11 @@
-
-import {GlobalRepositoryInterface} from '../../interfaces/repositories/GlobalRepositoryInterface'
-import { ProductTransactionEntity } from "../../entities/ProductTransactionEntity"
 import { inputUpdateProductTransaction, IUpdateProductTransactionUseCase } from "../../interfaces/usecases/ProductTransaction/IUpdateProductTransactionUsecase"
+import { IProductTransactionRepository } from '../../interfaces/repositories/ProductTransaction/IProductTransactionRepository'
 
 export class UpdateProductTransactionUseCase implements IUpdateProductTransactionUseCase {
-  private repository: GlobalRepositoryInterface<ProductTransactionEntity>
+  private repository: IProductTransactionRepository
 
   constructor(
-    repository: GlobalRepositoryInterface<ProductTransactionEntity>
+    repository: IProductTransactionRepository
   ) {
     this.repository = repository
   }async handle(input: inputUpdateProductTransaction): Promise<void> {

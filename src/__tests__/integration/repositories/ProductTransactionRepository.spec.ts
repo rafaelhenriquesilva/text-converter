@@ -15,9 +15,17 @@ describe('ProductTransactionRepository Actions', () => {
   })
 
   it('ProductTransactionRepository Insert', async() => {
-    const result = await repository.insert(data)
-    dataId = result && result.length > 0 && typeof result[0]?.id == 'string' ? result[0]?.id : '' 
-    expect(result[0]?.id).toBeDefined()
+    await repository.insert(data)
+    const itemInserted = await repository.findByParameters({
+      name: data.name,
+      productValue: data.productValue,
+      idUser: data.idUser,
+      idProduct: data.idProduct,
+      idOrder: data.idOrder
+    })
+
+    dataId = itemInserted && itemInserted.length > 0 && typeof itemInserted[0]?.id == 'string' ? itemInserted[0]?.id : '' 
+    expect(itemInserted[0]?.id).toBeDefined()
   }, 15000)
 
   it('ProductTransactionRepository Update', async() => {
@@ -27,7 +35,6 @@ describe('ProductTransactionRepository Actions', () => {
       name: mockToUpdate.name, 
       idProduct: mockToUpdate.idProduct, 
       productValue: mockToUpdate.productValue, 
-      transactionDate: mockToUpdate.transactionDate, 
       idUser: mockToUpdate.idUser, 
       idOrder: mockToUpdate.idOrder, 
     })

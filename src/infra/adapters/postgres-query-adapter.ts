@@ -21,49 +21,14 @@ export class PostgresQueryAdapter {
     return query
   }
 
+
   static insert(input: InsertQueryInterface): string {
-    input.fields = input.fields.filter(field => field.value !== undefined && field.value !== null)
-
-    if(input.fields.length === 0) {
-      throw new Error('Insert query needs at least one field. Verify if the fields have correct values!')
-    }
-
-    let query = `INSERT INTO ${input.table} (`
-    const fieldsName = input.fields.map((data) => data.name)
-
-    const fieldsValue = input.fields.map((data) => this.formatQueryValue(data))
-
-
-    for (const fieldName of fieldsName) {
-      query += `${fieldName},`
-    }
-
-    query = this.removeWordOfString(query, ',', -1)
-
-    query += `) VALUES (`
-
-    for (const fieldValue of fieldsValue) {
-      query += `${fieldValue},`
-    }
-
-    query = this.removeWordOfString(query, ',', -1)
-
-    query += ') '
-
-    if(input.retuning) {
-      query += `RETURNING ${input.retuning.name}`
-    }
-
-    return query
-  }
-
-  static insertMany(input: InsertQueryInterface[]): string {
-    if (input.length === 0) {
+    if (input.fields.length === 0) {
       throw new Error('Insert many query needs at least one set of fields.')
     }
 
-    const table = input[0].table
-    const fieldsName = input[0].fields.map((data) => data.name)
+    const table = input.table
+    const fieldsName = input.fields[0].map((data) => data.name)
 
     let query = `INSERT INTO ${table} (`
 
@@ -75,38 +40,39 @@ export class PostgresQueryAdapter {
 
     query += `) VALUES `
 
-    for (const item of input) {
-      item.fields = item.fields.filter(field => field.value !== undefined && field.value !== null)
-      if (item.fields.length !== fieldsName.length) {
-        throw new Error('All field sets must have the same number of fields.')
+    for (let listFields of input.fields) {
+      if (listFields) {
+        listFields = listFields.filter(field => field.value !== undefined && field.value !== null)
+        if (listFields.length !== fieldsName.length) {
+          throw new Error('All field sets must have the same number of fields.')
+        }
+
+        let values = '('
+        for (const field of listFields) {
+          values += `${this.formatQueryValue(field)},`
+
+        }
+        values = this.removeWordOfString(values, ',', -1)
+        values += '),'
+
+        query += values
       }
+      query = this.removeWordOfString(query, ',', -1)
 
-      let values = '('
-      for (const field of item.fields) {
-        values += `${this.formatQueryValue(field)},`
-      }
-
-      values = this.removeWordOfString(values, ',', -1)
-      values += '),'
-
-      query += values
     }
-
-    query = this.removeWordOfString(query, ',', -1)
-
     return query
   }
 
   static update(input: UpdateQueryInterface): string {
     input.fields = input.fields.filter(field => field.value !== undefined && field.value !== null)
-    
-    if(input.fields.length === 0) {
+
+    if (input.fields.length === 0) {
       throw new Error('UPDATE query needs at least one field. Verify if the fields have correct values!')
     }
 
     input.where = input.where.filter(field => field.value !== undefined && field.value !== null)
 
-    if(input.where.length === 0) {
+    if (input.where.length === 0) {
       throw new Error('UPDATE query needs at least one field on where condition. Verify if the fields have correct values!')
     }
 
@@ -127,7 +93,7 @@ export class PostgresQueryAdapter {
 
   static delete(input: DeleteQueryInterface): string {
     input.where = input.where.filter(field => field.value !== undefined && field.value !== null)
-    if(input.where.length === 0) {
+    if (input.where.length === 0) {
       throw new Error('DELETE query needs at least one field on where condition. Verify if the fields have correct values!')
     }
 
@@ -152,12 +118,12 @@ export class PostgresQueryAdapter {
     let whereCondition = ''
     if (fields && fields.length > 0) {
       whereCondition += ' WHERE '
-  
+
       for (const field of fields) {
         const value = this.formatQueryValue(field)
         whereCondition += `${field.name} ${field.equal === false ? '!=' : '='} ${value} AND `
       }
-  
+
       whereCondition = this.removeWordOfString(whereCondition, 'AND ', -4)
     }
     return whereCondition
@@ -167,18 +133,18 @@ export class PostgresQueryAdapter {
     if (fields && fields.length === 0) {
       throw new Error(`${type} BY condition needs at least one field`)
     }
-    
-    
-    if(fields) {
+
+
+    if (fields) {
       query += type === 'GROUP' ? ' GROUP BY ' : type === 'ORDER' ? ' ORDER BY ' : ''
 
       for (const field of fields) {
         query += `${field.name},`
       }
-  
+
       query = this.removeWordOfString(query, ',', -1)
     }
-    
+
     return query
   }
 }

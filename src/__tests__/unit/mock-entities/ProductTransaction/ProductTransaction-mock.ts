@@ -4,7 +4,11 @@ import { faker } from '@faker-js/faker'
 import { ProductTransactionEntity } from "../../../../entities/ProductTransactionEntity"
 
 export const createProductTransactionMock = () => {
-  return new ProductTransactionEntity({name: faker.string.sample(), 
+  return new ProductTransactionEntity({
+    name: faker.string.sample({
+      min: 5,
+      max: 20
+    }), 
     idProduct: '70', 
     productValue: 70.7, 
     createdAt: new Date(), 

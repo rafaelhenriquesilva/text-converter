@@ -1,13 +1,11 @@
 
-import {GlobalRepositoryInterface} from '../../interfaces/repositories/GlobalRepositoryInterface'
-import { ProductTransactionEntity } from "../../entities/ProductTransactionEntity"
 import { IDeleteProductTransactionUseCase } from "../../interfaces/usecases/ProductTransaction/IDeleteProductTransactionUsecase"
-
+import { IProductTransactionRepository } from "../../interfaces/repositories/ProductTransaction/IProductTransactionRepository"
 export class DeleteProductTransactionUseCase implements IDeleteProductTransactionUseCase {
-  private repository: GlobalRepositoryInterface<ProductTransactionEntity>
+  private repository: IProductTransactionRepository
 
   constructor(
-    repository: GlobalRepositoryInterface<ProductTransactionEntity>
+    repository: IProductTransactionRepository
   ) {
     this.repository = repository
   }

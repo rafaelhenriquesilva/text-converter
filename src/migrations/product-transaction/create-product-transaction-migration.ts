@@ -1,10 +1,10 @@
-import { DatabaseConnection } from "../../infra/database/database-connection";
+import { DatabaseConnection } from "../../infra/database/database-connection"
 
 
 export class CreateProductTransactionMigration {
-    static async execute() {
-        const connection = DatabaseConnection.getInstance()
-        await connection.query(`
+  static async execute() {
+    const connection = DatabaseConnection.getInstance()
+    await connection.query(`
             CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
             -- Cria a tabela product_transaction, se não existir
@@ -35,13 +35,13 @@ export class CreateProductTransactionMigration {
             FOR EACH ROW
             EXECUTE PROCEDURE update_updated_at_column();
         `)
-    }
+  }
 
-    static async reset() {
-        const connection = DatabaseConnection.getInstance()
-        await connection.query(`
+  static async reset() {
+    const connection = DatabaseConnection.getInstance()
+    await connection.query(`
             DROP TRIGGER IF EXISTS update_product_transaction_updated_at ON product_transaction;
             DROP TABLE IF EXISTS product_transaction;
         `)
-    }
+  }
 }

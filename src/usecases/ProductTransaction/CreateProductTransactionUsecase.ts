@@ -1,13 +1,13 @@
 
-import {GlobalRepositoryInterface} from '../../interfaces/repositories/GlobalRepositoryInterface'
-import { ProductTransactionEntity } from "../../entities/ProductTransactionEntity"
+
+import { IProductTransactionRepository } from "../../interfaces/repositories/ProductTransaction/IProductTransactionRepository"
 import { ICreateProductTransactionUseCase, inputCreateProductTransaction } from "../../interfaces/usecases/ProductTransaction/ICreateProductTransactionUsecase"
 
 export class CreateProductTransactionUseCase implements ICreateProductTransactionUseCase {
-  private repository: GlobalRepositoryInterface<ProductTransactionEntity>
+  private repository: IProductTransactionRepository
 
   constructor(
-    repository: GlobalRepositoryInterface<ProductTransactionEntity>
+    repository: IProductTransactionRepository
   ) {
     this.repository = repository
   } 
