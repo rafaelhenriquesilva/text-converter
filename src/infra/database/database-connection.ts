@@ -1,10 +1,10 @@
 import { IDatabaseConnection, InputDatabaseConnection } from "./@shared/database-connection-interface"
 import { SelectQueryInterface, InsertQueryInterface, UpdateQueryInterface, DeleteQueryInterface } from "./@shared/query-interface"
-import PostgreSQLAdapter from "./postgres/postgres-adapter"
+import PgPromiseAdapter from "./pg-promise/pg-promise-adapter"
 import 'dotenv/config'
 export class DatabaseConnection implements IDatabaseConnection {
   private static instance: DatabaseConnection
-  private connection: PostgreSQLAdapter | null = null
+  private connection: PgPromiseAdapter | null = null
   static dbConfig: InputDatabaseConnection | null
   private constructor() { }
 
@@ -16,12 +16,12 @@ export class DatabaseConnection implements IDatabaseConnection {
     return DatabaseConnection.instance
   }
 
-  private start(): PostgreSQLAdapter {
+  private start(): PgPromiseAdapter {
     const port: number =
       DatabaseConnection.dbConfig?.DB_PORT ?
         DatabaseConnection.dbConfig.DB_PORT : process.env.DB_PORT ?
           parseInt(process.env.DB_PORT) : 5432
-    return new PostgreSQLAdapter({
+    return new PgPromiseAdapter({
       database: DatabaseConnection.dbConfig?.DB_NAME || process.env.DB_NAME || '',
       host: DatabaseConnection.dbConfig?.DB_HOST || process.env.DB_HOST || '',
       password: DatabaseConnection.dbConfig?.DB_PASSWORD || process.env.DB_PASSWORD || '',
@@ -30,7 +30,7 @@ export class DatabaseConnection implements IDatabaseConnection {
     })
   }
 
-  async getConnection(): Promise<PostgreSQLAdapter> {
+  async getConnection(): Promise<PgPromiseAdapter> {
     if (!this.connection) {
       this.connection = this.start()
     }
