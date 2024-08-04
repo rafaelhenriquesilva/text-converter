@@ -4,10 +4,10 @@ export interface ICreateProductTransactionUseCase {
 }
 export interface inputCreateProductTransaction {
     name: string
-    idProduct: string
+    idProduct: number
     productValue: number
     transactionDate: Date
-    idUser: string
-    idOrder: string
+    idUser: number
+    idOrder: number
 
 }

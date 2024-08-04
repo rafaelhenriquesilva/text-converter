@@ -1,7 +1,7 @@
 import { FieldLineDTO } from "../../dto/FieldLineDTO"
 import {promises}  from 'fs'
 import { IConvertFileService } from "../../interfaces/services/file/IConvertFileService"
-export class FileConverterService<T> implements IConvertFileService<T> {
+export class ConvertFileService<T> implements IConvertFileService<T> {
   constructor(private filePath: string) {}
   
   async convertFileToJSON(): Promise<string> {
@@ -22,7 +22,7 @@ export class FileConverterService<T> implements IConvertFileService<T> {
       const obj: any = {}
   
       for(const field of fields) {
-        obj[field.name] = field.action ? field.action(line.slice(field.startIndex, field.endIndex)) : (line.slice(field.startIndex, field.endIndex))
+        obj[field.name] = line.slice(field.startIndex, field.endIndex)
       }
   
       for( const [key, value] of Object.entries(obj)) {

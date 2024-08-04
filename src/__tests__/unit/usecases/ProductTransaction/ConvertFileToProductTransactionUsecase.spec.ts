@@ -1,16 +1,16 @@
 
 import path from 'path'
-import { FileConverterService } from '../../../../services/file-converter/FileConverterService'
+import { ConvertFileService } from '../../../../services/file-converter/ConvertFileService'
 import { ConvertFileToProductTransactionUsecase } from '../../../../usecases/ProductTransaction/ConvertFileToProductTransactionUsecase'
 import { ProductTransactionRow } from '../../../../interfaces/usecases/ProductTransaction/IConvertFileToProductTransactionUsecase'
 
 describe('ConvertCsvToEntitieService', () => {
   let usecase: ConvertFileToProductTransactionUsecase
-  let fileConverter: FileConverterService<ProductTransactionRow>
+  let fileConverter: ConvertFileService<ProductTransactionRow>
 
   it('Convert CSV data 1', async() => {
     const filePath = path.join(__dirname, '..', '..', '..', '..', 'files', 'data_1.txt')
-    fileConverter = new FileConverterService<ProductTransactionRow>(filePath)
+    fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
     usecase = new ConvertFileToProductTransactionUsecase(fileConverter)
     const dataStr = await fileConverter.convertFileToJSON()
     const result = await usecase.handle(dataStr)
@@ -20,7 +20,7 @@ describe('ConvertCsvToEntitieService', () => {
 
   it('Convert CSV data 2', async() => {
     const filePath = path.join(__dirname, '..', '..', '..', '..', 'files', 'data_2.txt')
-    fileConverter = new FileConverterService<ProductTransactionRow>(filePath)
+    fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
     usecase = new ConvertFileToProductTransactionUsecase(fileConverter)
     const dataStr = await fileConverter.convertFileToJSON()
     const result = await usecase.handle(dataStr)

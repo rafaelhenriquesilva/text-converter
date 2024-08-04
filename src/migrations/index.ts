@@ -1,4 +1,4 @@
-import { CreateProductTransactionMigration } from "./product-transaction/create-product-transaction-migration"
+import { CreateProductTransactionMigration } from "./product-transaction/CreateProductTransactionMigration"
 
 
 export class Migrations {

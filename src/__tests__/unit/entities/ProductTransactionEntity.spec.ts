@@ -1,5 +1,5 @@
 
-import { createProductTransactionMock } from "../mock-entities/ProductTransaction/ProductTransaction-mock"
+import { createProductTransactionMock } from "../mock-entities/ProductTransaction/ProductTransactionMock"
             
 describe('Generate a Entity ProductTransaction', () => {
   it('should be entity values', async() => {

@@ -10,10 +10,10 @@ export interface OutputConvertFileToProductTransaction {
 }
 
 export interface ProductTransactionRow {
-    idUser: number;
+    idUser: string;
     name: string;
-    idOrder: number;
-    idProduct: number;
-    valueProduct: number;
+    idOrder: string;
+    idProduct: string;
+    valueProduct: string;
     transactionDate: string;
 }

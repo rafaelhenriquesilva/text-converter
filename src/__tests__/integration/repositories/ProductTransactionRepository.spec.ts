@@ -1,7 +1,7 @@
 
 import { ProductTransactionEntity } from '../../../entities/ProductTransactionEntity'
 import { ProductTransactionRepository } from '../../../repositories/ProductTransactionRepository'
-import { createProductTransactionMock } from '../../unit/mock-entities/ProductTransaction/ProductTransaction-mock'
+import { createProductTransactionMock } from '../../unit/mock-entities/ProductTransaction/ProductTransactionMock'
         
 
 describe('ProductTransactionRepository Actions', () => {
@@ -47,7 +47,6 @@ describe('ProductTransactionRepository Actions', () => {
     expect(result[0].name).toBe(mockToUpdate.name) 
     expect(result[0].idProduct).toBe(mockToUpdate.idProduct) 
     expect(result[0].productValue).toBe(mockToUpdate.productValue) 
-    //expect(result[0].transactionDate).toBe(mockToUpdate.transactionDate) 
     expect(result[0].idUser).toBe(mockToUpdate.idUser) 
     expect(result[0].idOrder).toBe(mockToUpdate.idOrder) 
 

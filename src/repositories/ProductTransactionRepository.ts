@@ -85,11 +85,11 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     await this.connection.update({
       fields:
         [{ name: 'name', value: input.name },
-        { name: 'id_product', value: input.idProduct },
-        { name: 'product_value', value: input.productValue },
-        { name: 'transaction_date', value: input.transactionDate },
-        { name: 'id_user', value: input.idUser },
-        { name: 'id_order', value: input.idOrder },
+          { name: 'id_product', value: input.idProduct },
+          { name: 'product_value', value: input.productValue },
+          { name: 'transaction_date', value: input.transactionDate },
+          { name: 'id_user', value: input.idUser },
+          { name: 'id_order', value: input.idOrder },
         ], table: this.tableName,
       where: [{
         name: 'id',
@@ -113,7 +113,7 @@ export class ProductTransactionRepository implements IProductTransactionReposito
   }
 
   getOnlyTableFieldsName() {
-    let fields: QueryField[] = this.getTableFields()
+    const fields: QueryField[] = this.getTableFields()
 
     for (const field of fields) {
       delete field.value

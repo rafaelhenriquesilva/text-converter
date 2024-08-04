@@ -11,9 +11,9 @@ export class CreateProductTransactionMigration {
             CREATE TABLE IF NOT EXISTS product_transaction (
                 id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                 name varchar(45) not null,
-                id_user varchar(10) not null,
-                id_order varchar(10) not null,
-                id_product varchar(10) not null,
+                id_user integer not null,
+                id_order integer not null,
+                id_product integer not null,
                 product_value float not null,
                 transaction_date Date not null,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
