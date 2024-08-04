@@ -1,26 +1,33 @@
 
+import { ProductTransactionRow } from "../../../../interfaces/usecases/ProductTransaction/IConvertFileToProductTransactionUsecase"
+import { ProductTransactionRepository } from "../../../../repositories/ProductTransactionRepository"
+import { ConvertFileService } from "../../../../services/file-converter/ConvertFileService"
+import { ConvertFileToProductTransactionUsecase } from "../../../../usecases/ProductTransaction/ConvertFileToProductTransactionUsecase"
 import { CreateProductTransactionUseCase } from "../../../../usecases/ProductTransaction/CreateProductTransactionUsecase"
-import { createProductTransactionMock } from "../../mock-entities/ProductTransaction/ProductTransactionMock"
-import { productTransactionRepositoryMock } from "../../mock-repositories/product-transaction-repository-mock"
-
+import path from 'path'
 describe('CreateProductTransactionUseCase', () => {
-  let usecase: CreateProductTransactionUseCase
-
+  let productTransactionRepository: ProductTransactionRepository
+  let createProductTransactionUseCase: CreateProductTransactionUseCase
+  let convertFileToProductTransactionUsecase: ConvertFileToProductTransactionUsecase
+  let fileConverter: ConvertFileService<ProductTransactionRow>
+  let filePath: string
   beforeEach(() => {
-    usecase = new CreateProductTransactionUseCase(productTransactionRepositoryMock)
+    filePath = path.join(__dirname, '..','..', '..', '..', 'files', 'data_2.txt')
+    fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
+    productTransactionRepository = new ProductTransactionRepository()
+    createProductTransactionUseCase = new CreateProductTransactionUseCase(productTransactionRepository)
+    convertFileToProductTransactionUsecase = new ConvertFileToProductTransactionUsecase(fileConverter)
   })
   it('CreateProductTransactionUseCase handle', async() => {
-    const mock = createProductTransactionMock()
-    await usecase.handle({ 
-      name: mock.name, 
-      idProduct: mock.idProduct, 
-      productValue: mock.productValue, 
-      transactionDate: mock.transactionDate, 
-      idUser: mock.idUser, 
-      idOrder: mock.idOrder, 
+    const contentStr = await fileConverter.convertFileToJSON()
+    const convertResult = await convertFileToProductTransactionUsecase.handle(contentStr)
+    await createProductTransactionUseCase.handle(convertResult.listProductTransaction)
+    const productTransactions = await productTransactionRepository.listAll()
+    expect(productTransactions.length > 0).toBe(true)
+  })
 
-    })
-    expect(productTransactionRepositoryMock.insert).toHaveBeenCalledTimes(1)
+  afterAll(async () => {
+    await productTransactionRepository.deleteAll()
   })
     
 })

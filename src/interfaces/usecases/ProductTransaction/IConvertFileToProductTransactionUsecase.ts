@@ -11,7 +11,7 @@ export interface OutputConvertFileToProductTransaction {
 
 export interface ProductTransactionRow {
     idUser: string;
-    name: string;
+    clientName: string;
     idOrder: string;
     idProduct: string;
     valueProduct: string;

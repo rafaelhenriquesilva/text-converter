@@ -11,7 +11,7 @@ export class UpdateProductTransactionUseCase implements IUpdateProductTransactio
   }async handle(input: inputUpdateProductTransaction): Promise<void> {
     await this.repository.update({
       id: input.id, 
-      name: input.name, 
+      clientName: input.clientName, 
       idProduct: input.idProduct, 
       productValue: input.productValue, 
       transactionDate: input.transactionDate, 

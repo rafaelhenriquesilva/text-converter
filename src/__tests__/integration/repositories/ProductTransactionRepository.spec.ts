@@ -15,9 +15,9 @@ describe('ProductTransactionRepository Actions', () => {
   })
 
   it('ProductTransactionRepository Insert', async() => {
-    await repository.insert(data)
+    await repository.insert([data])
     const itemInserted = await repository.findByParameters({
-      name: data.name,
+      clientName: data.clientName,
       productValue: data.productValue,
       idUser: data.idUser,
       idProduct: data.idProduct,
@@ -32,7 +32,7 @@ describe('ProductTransactionRepository Actions', () => {
     mockToUpdate = createProductTransactionMock()
     await repository.update({
       id: dataId,
-      name: mockToUpdate.name, 
+      clientName: mockToUpdate.clientName, 
       idProduct: mockToUpdate.idProduct, 
       productValue: mockToUpdate.productValue, 
       idUser: mockToUpdate.idUser, 
@@ -44,7 +44,7 @@ describe('ProductTransactionRepository Actions', () => {
   it('ProductTransactionRepository Find By Id', async() => {
     const result = await repository.findById(dataId)
     expect(result.length).toBe(1)
-    expect(result[0].name).toBe(mockToUpdate.name) 
+    expect(result[0].clientName).toBe(mockToUpdate.clientName) 
     expect(result[0].idProduct).toBe(mockToUpdate.idProduct) 
     expect(result[0].productValue).toBe(mockToUpdate.productValue) 
     expect(result[0].idUser).toBe(mockToUpdate.idUser) 

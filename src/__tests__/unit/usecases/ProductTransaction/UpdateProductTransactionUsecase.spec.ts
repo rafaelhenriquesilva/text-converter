@@ -14,7 +14,7 @@ describe('UpdateProductTransactionUseCase', () => {
     const mock = createProductTransactionMock()
     await usecase.handle({
       id: mock.id, 
-      name: mock.name, 
+      clientName: mock.clientName, 
       idProduct: mock.idProduct, 
       productValue: mock.productValue, 
       transactionDate: mock.transactionDate, 

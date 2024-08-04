@@ -13,6 +13,12 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     this.tableName = 'public.product_transaction'
   }
 
+  async deleteAll(): Promise<void> {
+    await this.connection.delete({
+      table: this.tableName
+    })
+  }
+
   async findByParameters(input: Partial<ProductTransactionEntity>): Promise<ProductTransactionEntity[]> {
     const SchemaModel = await this.connection.find({
       table: this.tableName,
@@ -61,22 +67,28 @@ export class ProductTransactionRepository implements IProductTransactionReposito
 
   }
 
-  async insert(input: Partial<ProductTransactionEntity>): Promise<void> {
+  async insert(input: ProductTransactionEntity[]): Promise<void> {
+    const fieldsoInsert: QueryField[][] = []
+
+    for ( const data of input) {
+      fieldsoInsert.push([
+        
+          { name: `client_name`, value: data.clientName },
+          { name: 'id_product', value: data.idProduct },
+          { name: 'product_value', value: data.productValue },
+          {
+            name: 'transaction_date', value:
+              data.transactionDate ? formatDateYYYYMMDD(data.transactionDate) : null
+          },
+          { name: 'id_user', value: data.idUser },
+          { name: 'id_order', value: data.idOrder },
+        
+      ])
+    }
+
+
     await this.connection.insert({
-      fields:
-        [
-          [
-            { name: 'name', value: input.name },
-            { name: 'id_product', value: input.idProduct },
-            { name: 'product_value', value: input.productValue },
-            {
-              name: 'transaction_date', value:
-                input.transactionDate ? formatDateYYYYMMDD(input.transactionDate) : null
-            },
-            { name: 'id_user', value: input.idUser },
-            { name: 'id_order', value: input.idOrder },
-          ]
-        ],
+      fields: fieldsoInsert,
       table: this.tableName
     })
   }
@@ -84,7 +96,7 @@ export class ProductTransactionRepository implements IProductTransactionReposito
   async update(input: Partial<ProductTransactionEntity>): Promise<void> {
     await this.connection.update({
       fields:
-        [{ name: 'name', value: input.name },
+        [{ name: 'client_name', value: input.clientName },
           { name: 'id_product', value: input.idProduct },
           { name: 'product_value', value: input.productValue },
           { name: 'transaction_date', value: input.transactionDate },
@@ -100,7 +112,7 @@ export class ProductTransactionRepository implements IProductTransactionReposito
 
   private mapRowToEntity(row: any) {
     return new ProductTransactionEntity({
-      name: row.name,
+      clientName: row.client_name,
       idProduct: row.id_product,
       productValue: row.product_value,
       transactionDate: row.transaction_date,
@@ -128,8 +140,8 @@ export class ProductTransactionRepository implements IProductTransactionReposito
         value: input?.id
       },
       {
-        name: 'name',
-        value: input?.name
+        name: 'client_name',
+        value: input?.clientName
       },
       {
         name: 'id_user',
