@@ -10,7 +10,7 @@ export class CreateProductTransactionMigration {
             -- Cria a tabela product_transaction, se não existir
             CREATE TABLE IF NOT EXISTS product_transaction (
                 id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-                name varchar(45) not null,
+                client_name varchar(45) not null,
                 id_user integer not null,
                 id_order integer not null,
                 id_product integer not null,

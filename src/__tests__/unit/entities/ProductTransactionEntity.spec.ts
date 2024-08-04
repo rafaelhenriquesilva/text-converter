@@ -5,7 +5,7 @@ describe('Generate a Entity ProductTransaction', () => {
   it('should be entity values', async() => {
     const entity = createProductTransactionMock()
     expect(entity.toJson()).toEqual({
-      name: entity.name, 
+      clientName: entity.clientName, 
       idProduct: entity.idProduct, 
       productValue: entity.productValue, 
       createdAt: entity.toJson().createdAt, 

@@ -1,5 +1,5 @@
 export interface ProductTransactionDTO {
-    name: string
+    clientName: string
     idProduct: number
     productValue: number
     createdAt: Date

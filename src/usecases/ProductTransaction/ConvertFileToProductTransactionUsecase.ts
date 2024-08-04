@@ -41,7 +41,7 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
       idOrder: parseInt(row.idOrder),
       idProduct: parseInt(row.idProduct),
       idUser: parseInt(row.idUser),
-      name: row.name,
+      clientName: row.clientName.replace(/'/g, `''`),
       productValue: parseFloat(row.valueProduct),
       transactionDate: new Date(formatStringDateYYYYMMDD(row.transactionDate)),
       createdAt: new Date(),
@@ -53,7 +53,7 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
   mappingFileFields() {
     const fields: FieldLineDTO[] = [
       { name: 'idUser', startIndex: 0, endIndex: 10},
-      { name: 'name', startIndex: 10, endIndex: 55 },
+      { name: 'clientName', startIndex: 10, endIndex: 55 },
       { name: 'idOrder', startIndex: 55, endIndex: 65},
       { name: 'idProduct', startIndex: 65, endIndex: 75},
       { name: 'valueProduct', startIndex: 75, endIndex: 87},

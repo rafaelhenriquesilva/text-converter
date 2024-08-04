@@ -4,7 +4,7 @@ export interface IUpdateProductTransactionUseCase {
 }
 export interface inputUpdateProductTransaction {
     id: string
-    name: string
+    clientName: string
     idProduct: number
     productValue: number
     transactionDate: Date

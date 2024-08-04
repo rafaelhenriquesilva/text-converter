@@ -5,7 +5,7 @@ import { ProductTransactionEntity } from "../../../../entities/ProductTransactio
 
 export const createProductTransactionMock = () => {
   return new ProductTransactionEntity({
-    name: faker.vehicle.vehicle(),
+    clientName: faker.vehicle.vehicle(),
     idProduct: faker.number.int({
       min: 10,
       max: 999

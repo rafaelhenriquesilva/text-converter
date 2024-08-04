@@ -57,9 +57,10 @@ export class PostgresQueryAdapter {
 
         query += values
       }
-      query = this.removeWordOfString(query, ',', -1)
+      
 
     }
+    query = this.removeWordOfString(query, ',', -1)
     return query
   }
 
@@ -92,14 +93,14 @@ export class PostgresQueryAdapter {
   }
 
   static delete(input: DeleteQueryInterface): string {
-    input.where = input.where.filter(field => field.value !== undefined && field.value !== null)
-    if (input.where.length === 0) {
-      throw new Error('DELETE query needs at least one field on where condition. Verify if the fields have correct values!')
-    }
+    input.where = input.where?.filter(field => field.value !== undefined && field.value !== null)
 
     let query = `DELETE FROM ${input.table} `
 
-    query += this.createWhereCondition(input.where)
+    if (input.where?.length !== 0) {
+      query += this.createWhereCondition(input.where)
+    }
+   
 
     return query
   }

@@ -8,7 +8,7 @@ export interface SelectQueryInterface {
 
 export interface DeleteQueryInterface {
     table: string
-    where: QueryField[]
+    where?: QueryField[]
 }
 
 export interface UpdateQueryInterface {
