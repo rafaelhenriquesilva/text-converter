@@ -7,19 +7,19 @@ export class ProductTransactionEntity
   private readonly _idProduct: string 
   private readonly _productValue: number 
   private readonly _createdAt: Date 
-  private readonly _transactionDate: string 
+  private readonly _transactionDate: Date 
   private readonly _updatedAt: Date 
   private readonly _idUser: string 
   private readonly _id: string 
   private readonly _idOrder: string 
 
-  constructor(dto: ProductTransactionDTO) { 
+  constructor(dto: Omit<ProductTransactionDTO, 'createdAt' | 'updatedAt'>) { 
     this._name = dto.name 
     this._idProduct = dto.idProduct 
     this._productValue = dto.productValue 
-    this._createdAt = dto.createdAt 
+    this._createdAt = new Date()
     this._transactionDate = dto.transactionDate 
-    this._updatedAt = dto.updatedAt 
+    this._updatedAt = new Date() 
     this._idUser = dto.idUser 
     this._id = dto.id 
     this._idOrder = dto.idOrder 
@@ -41,7 +41,7 @@ export class ProductTransactionEntity
     return this._createdAt
   } 
 
-  public get transactionDate(): string {
+  public get transactionDate(): Date {
     return this._transactionDate
   } 
 

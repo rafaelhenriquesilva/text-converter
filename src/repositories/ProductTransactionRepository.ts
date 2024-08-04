@@ -3,6 +3,7 @@ import { ProductTransactionEntity } from "../entities/ProductTransactionEntity"
 import { QueryField } from "../infra/database/@shared/query-interface"
 import { DatabaseConnection } from "../infra/database/database-connection"
 import { IProductTransactionRepository } from "../interfaces/repositories/ProductTransaction/IProductTransactionRepository"
+import { formatDateYYYYMMDD } from "../util/date-util"
 export class ProductTransactionRepository implements IProductTransactionRepository {
   connection: DatabaseConnection
   tableName: string
@@ -42,9 +43,7 @@ export class ProductTransactionRepository implements IProductTransactionReposito
       name: row.name,
       idProduct: row.id_product,
       productValue: row.product_value,
-      createdAt: row.created_at,
       transactionDate: row.transaction_date,
-      updatedAt: row.updated_at,
       idUser: row.id_user,
       id: row.id,
       idOrder: row.id_order,
@@ -128,7 +127,9 @@ export class ProductTransactionRepository implements IProductTransactionReposito
             { name: 'name', value: input.name },
             { name: 'id_product', value: input.idProduct },
             { name: 'product_value', value: input.productValue },
-            { name: 'transaction_date', value: input.transactionDate },
+            { name: 'transaction_date', value: 
+                input.transactionDate ? formatDateYYYYMMDD(input.transactionDate) : null
+            },
             { name: 'id_user', value: input.idUser },
             { name: 'id_order', value: input.idOrder },
           ]
