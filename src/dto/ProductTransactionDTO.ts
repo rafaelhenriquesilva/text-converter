@@ -1,11 +1,11 @@
-export interface ProductTransactionDTO 
-{name: string 
-idProduct: string 
-productValue: number 
-createdAt: Date 
-transactionDate: string 
-updatedAt: Date 
-idUser: string 
-id: string 
-idOrder: string 
+export interface ProductTransactionDTO {
+    name: string
+    idProduct: number
+    productValue: number
+    createdAt: Date
+    transactionDate: Date
+    updatedAt: Date
+    idUser: number
+    id: string
+    idOrder: number
 }

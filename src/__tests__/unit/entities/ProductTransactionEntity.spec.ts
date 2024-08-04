@@ -1,5 +1,5 @@
 
-import { createProductTransactionMock } from "../mock-entities/ProductTransaction/ProductTransaction-mock"
+import { createProductTransactionMock } from "../mock-entities/ProductTransaction/ProductTransactionMock"
             
 describe('Generate a Entity ProductTransaction', () => {
   it('should be entity values', async() => {
@@ -8,9 +8,9 @@ describe('Generate a Entity ProductTransaction', () => {
       name: entity.name, 
       idProduct: entity.idProduct, 
       productValue: entity.productValue, 
-      createdAt: entity.createdAt, 
+      createdAt: entity.toJson().createdAt, 
       transactionDate: entity.transactionDate, 
-      updatedAt: entity.updatedAt, 
+      updatedAt: entity.toJson().updatedAt, 
       idUser: entity.idUser, 
       id: entity.id, 
       idOrder: entity.idOrder, 

@@ -3,6 +3,7 @@ import { ProductTransactionEntity } from "../entities/ProductTransactionEntity"
 import { QueryField } from "../infra/database/@shared/query-interface"
 import { DatabaseConnection } from "../infra/database/database-connection"
 import { IProductTransactionRepository } from "../interfaces/repositories/ProductTransaction/IProductTransactionRepository"
+import { formatDateYYYYMMDD } from "../util/date-util"
 export class ProductTransactionRepository implements IProductTransactionRepository {
   connection: DatabaseConnection
   tableName: string
@@ -11,7 +12,6 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     this.connection = DatabaseConnection.getInstance()
     this.tableName = 'public.product_transaction'
   }
- 
 
   async findByParameters(input: Partial<ProductTransactionEntity>): Promise<ProductTransactionEntity[]> {
     const SchemaModel = await this.connection.find({
@@ -26,46 +26,31 @@ export class ProductTransactionRepository implements IProductTransactionReposito
   }
 
   async listAll(): Promise<ProductTransactionEntity[]> {
+    const fields = this.getOnlyTableFieldsName()
     const SchemaModel = await this.connection.find({
       table: this.tableName,
-      fields: [
-        { name: '*' }
-      ]
+      fields
     })
 
     return SchemaModel.map((row: any) => this.mapRowToEntity(row))
 
   }
 
-  private mapRowToEntity(row: any) {
-    return new ProductTransactionEntity({
-      name: row.name,
-      idProduct: row.id_product,
-      productValue: row.product_value,
-      createdAt: row.created_at,
-      transactionDate: row.transaction_date,
-      updatedAt: row.updated_at,
-      idUser: row.id_user,
-      id: row.id,
-      idOrder: row.id_order,
-
-    })
-  }
   async deleteById(id: string): Promise<void> {
     await this.connection.delete({
       table: this.tableName,
       where: this.mappingWhereCondition({
-        id  
+        id
       })
     })
   }
 
   async findById(id: string): Promise<ProductTransactionEntity[]> {
+    const fields = this.getOnlyTableFieldsName()
+
     const SchemaModel = await this.connection.find({
       table: this.tableName,
-      fields: [
-        { name: '*' }
-      ],
+      fields: fields,
       where: [{
         name: 'id',
         value: id
@@ -76,50 +61,6 @@ export class ProductTransactionRepository implements IProductTransactionReposito
 
   }
 
-  mappingWhereCondition(input: Partial<ProductTransactionEntity>): QueryField[] {
-    let tableFields = [
-      {
-        name: 'id',
-        value: input.id
-      },
-      {
-        name: 'name',
-        value: input.name
-      },
-      {
-        name: 'id_user',
-        value: input.idUser
-      },
-      {
-        name: 'id_product',
-        value: input.idProduct
-      },
-      {
-        name: 'id_order',
-        value: input.idOrder
-      },
-      {
-        name: 'product_value',
-        value: input.productValue
-      },
-      {
-        name: 'transaction_date',
-        value: input.transactionDate
-      },
-      {
-        name: 'created_at',
-        value: input.createdAt
-      },
-      {
-        name: 'updated_at',
-        value: input.updatedAt
-      }
-    ]
-
-    tableFields = tableFields.filter(item => item.value)
-    return tableFields
-  }
-
   async insert(input: Partial<ProductTransactionEntity>): Promise<void> {
     await this.connection.insert({
       fields:
@@ -128,14 +69,19 @@ export class ProductTransactionRepository implements IProductTransactionReposito
             { name: 'name', value: input.name },
             { name: 'id_product', value: input.idProduct },
             { name: 'product_value', value: input.productValue },
-            { name: 'transaction_date', value: input.transactionDate },
+            {
+              name: 'transaction_date', value:
+                input.transactionDate ? formatDateYYYYMMDD(input.transactionDate) : null
+            },
             { name: 'id_user', value: input.idUser },
             { name: 'id_order', value: input.idOrder },
           ]
-        ], 
+        ],
       table: this.tableName
     })
-  } async update(input: Partial<ProductTransactionEntity>): Promise<void> {
+  }
+
+  async update(input: Partial<ProductTransactionEntity>): Promise<void> {
     await this.connection.update({
       fields:
         [{ name: 'name', value: input.name },
@@ -151,4 +97,76 @@ export class ProductTransactionRepository implements IProductTransactionReposito
       }]
     })
   }
+
+  private mapRowToEntity(row: any) {
+    return new ProductTransactionEntity({
+      name: row.name,
+      idProduct: row.id_product,
+      productValue: row.product_value,
+      transactionDate: row.transaction_date,
+      idUser: row.id_user,
+      id: row.id,
+      idOrder: row.id_order,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+  }
+
+  getOnlyTableFieldsName() {
+    const fields: QueryField[] = this.getTableFields()
+
+    for (const field of fields) {
+      delete field.value
+    }
+    return fields
+  }
+
+  getTableFields(input?: Partial<ProductTransactionEntity>): QueryField[] {
+    return [
+      {
+        name: 'id',
+        value: input?.id
+      },
+      {
+        name: 'name',
+        value: input?.name
+      },
+      {
+        name: 'id_user',
+        value: input?.idUser
+      },
+      {
+        name: 'id_product',
+        value: input?.idProduct
+      },
+      {
+        name: 'id_order',
+        value: input?.idOrder
+      },
+      {
+        name: 'product_value',
+        value: input?.productValue
+      },
+      {
+        name: 'transaction_date',
+        value: input?.transactionDate
+      },
+      {
+        name: 'created_at',
+        value: input?.createdAt
+      },
+      {
+        name: 'updated_at',
+        value: input?.updatedAt
+      }
+    ]
+  }
+
+  mappingWhereCondition(input: Partial<ProductTransactionEntity>): QueryField[] {
+    let tableFields = this.getTableFields(input)
+
+    tableFields = tableFields.filter(item => item.value)
+    return tableFields
+  }
+
 }

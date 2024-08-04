@@ -4,22 +4,22 @@ export class ProductTransactionEntity
 {
         
   private readonly _name: string 
-  private readonly _idProduct: string 
+  private readonly _idProduct: number 
   private readonly _productValue: number 
   private readonly _createdAt: Date 
-  private readonly _transactionDate: string 
+  private readonly _transactionDate: Date 
   private readonly _updatedAt: Date 
-  private readonly _idUser: string 
+  private readonly _idUser: number 
   private readonly _id: string 
-  private readonly _idOrder: string 
+  private readonly _idOrder: number 
 
   constructor(dto: ProductTransactionDTO) { 
     this._name = dto.name 
     this._idProduct = dto.idProduct 
     this._productValue = dto.productValue 
-    this._createdAt = dto.createdAt 
+    this._createdAt = dto.createdAt
     this._transactionDate = dto.transactionDate 
-    this._updatedAt = dto.updatedAt 
+    this._updatedAt = dto.updatedAt
     this._idUser = dto.idUser 
     this._id = dto.id 
     this._idOrder = dto.idOrder 
@@ -29,7 +29,7 @@ export class ProductTransactionEntity
     return this._name
   } 
 
-  public get idProduct(): string {
+  public get idProduct(): number {
     return this._idProduct
   } 
 
@@ -41,7 +41,7 @@ export class ProductTransactionEntity
     return this._createdAt
   } 
 
-  public get transactionDate(): string {
+  public get transactionDate(): Date {
     return this._transactionDate
   } 
 
@@ -49,7 +49,7 @@ export class ProductTransactionEntity
     return this._updatedAt
   } 
 
-  public get idUser(): string {
+  public get idUser(): number {
     return this._idUser
   } 
 
@@ -57,7 +57,7 @@ export class ProductTransactionEntity
     return this._id
   } 
 
-  public get idOrder(): string {
+  public get idOrder(): number {
     return this._idOrder
   } 
   toJson(): ProductTransactionDTO {

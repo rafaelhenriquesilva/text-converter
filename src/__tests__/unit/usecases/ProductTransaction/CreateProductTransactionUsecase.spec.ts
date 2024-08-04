@@ -1,6 +1,6 @@
 
 import { CreateProductTransactionUseCase } from "../../../../usecases/ProductTransaction/CreateProductTransactionUsecase"
-import { createProductTransactionMock } from "../../mock-entities/ProductTransaction/ProductTransaction-mock"
+import { createProductTransactionMock } from "../../mock-entities/ProductTransaction/ProductTransactionMock"
 import { productTransactionRepositoryMock } from "../../mock-repositories/product-transaction-repository-mock"
 
 describe('CreateProductTransactionUseCase', () => {
