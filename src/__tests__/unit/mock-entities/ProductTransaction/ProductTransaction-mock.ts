@@ -12,6 +12,8 @@ export const createProductTransactionMock = () => {
     }).toString(),
     productValue: 70.7,
     transactionDate: new Date('2024-08-01'),
+    createdAt: new Date(),
+    updatedAt: new Date(),
     idUser: faker.number.int({
       min: 10,
       max: 999

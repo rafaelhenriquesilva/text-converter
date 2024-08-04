@@ -47,7 +47,8 @@ export class ProductTransactionRepository implements IProductTransactionReposito
       idUser: row.id_user,
       id: row.id,
       idOrder: row.id_order,
-
+      createdAt: new Date(),
+      updatedAt: new Date(),
     })
   }
   async deleteById(id: string): Promise<void> {

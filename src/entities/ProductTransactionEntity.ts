@@ -13,13 +13,13 @@ export class ProductTransactionEntity
   private readonly _id: string 
   private readonly _idOrder: string 
 
-  constructor(dto: Omit<ProductTransactionDTO, 'createdAt' | 'updatedAt'>) { 
+  constructor(dto: ProductTransactionDTO) { 
     this._name = dto.name 
     this._idProduct = dto.idProduct 
     this._productValue = dto.productValue 
-    this._createdAt = new Date()
+    this._createdAt = dto.createdAt
     this._transactionDate = dto.transactionDate 
-    this._updatedAt = new Date() 
+    this._updatedAt = dto.updatedAt
     this._idUser = dto.idUser 
     this._id = dto.id 
     this._idOrder = dto.idOrder 
