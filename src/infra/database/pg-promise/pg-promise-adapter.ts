@@ -1,6 +1,6 @@
 import pgPromise, { IDatabase, IMain } from 'pg-promise'
 import { DeleteQueryInterface, InsertQueryInterface, SelectQueryInterface, UpdateQueryInterface } from '../@shared/query-interface'
-import { PostgresQueryAdapter } from '../../adapters/postgres-query-adapter'
+import { PostgresQueryAdapter } from '../../adapters/postgres/postgres-query-adapter'
 
 interface ConnectionConfig {
     host: string;

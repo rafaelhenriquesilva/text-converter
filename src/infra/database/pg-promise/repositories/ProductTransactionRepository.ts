@@ -73,15 +73,15 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     for ( const data of input) {
       fieldsoInsert.push([
         
-          { name: `client_name`, value: data.clientName },
-          { name: 'id_product', value: data.idProduct },
-          { name: 'product_value', value: data.productValue },
-          {
-            name: 'transaction_date', value:
+        { name: `client_name`, value: data.clientName },
+        { name: 'id_product', value: data.idProduct },
+        { name: 'product_value', value: data.productValue },
+        {
+          name: 'transaction_date', value:
               data.transactionDate ? formatDateYYYYMMDD(data.transactionDate) : null
-          },
-          { name: 'id_user', value: data.idUser },
-          { name: 'id_order', value: data.idOrder },
+        },
+        { name: 'id_user', value: data.idUser },
+        { name: 'id_order', value: data.idOrder },
         
       ])
     }

@@ -26,7 +26,7 @@ describe('CreateProductTransactionUseCase', () => {
     expect(productTransactions.length > 0).toBe(true)
   })
 
-  afterAll(async () => {
+  afterAll(async() => {
     //await productTransactionRepository.deleteAll()
   })
     

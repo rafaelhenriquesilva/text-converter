@@ -1,4 +1,4 @@
-import { PostgresQueryAdapter } from '../../../../../src/infra/adapters/postgres-query-adapter'
+import { PostgresQueryAdapter } from '../../../../../src/infra/adapters/postgres/postgres-query-adapter'
 describe('Insert Query Util Mehods', () => {
 
 

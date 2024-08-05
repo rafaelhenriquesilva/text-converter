@@ -1,5 +1,5 @@
 
-import path, { dirname } from 'path'
+import path from 'path'
 import { ConvertFileService } from '../../../src/app/services/file-converter/ConvertFileService'
 import { FieldLineDTO } from '../../../src/domain/dtos/FieldLineDTO'
 

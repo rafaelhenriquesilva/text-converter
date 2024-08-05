@@ -1,4 +1,4 @@
-import {PostgresQueryAdapter} from '../../../../../src/infra/adapters/postgres-query-adapter'
+import {PostgresQueryAdapter} from '../../../../../src/infra/adapters/postgres/postgres-query-adapter'
 describe('Find Query Util Mehods', () =>  {
   it('create a select query any where', () => {
     const query = PostgresQueryAdapter.find({
