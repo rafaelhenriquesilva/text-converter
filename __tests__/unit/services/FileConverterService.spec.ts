@@ -30,7 +30,7 @@ describe('ConvertCsvToEntitieService', () => {
     const filePath = path.join(__dirname, '..', '..', 'files', 'data_1.txt')
     fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
     const dataStr = await fileConverter.convertFileToJSON()
-    const result = await fileConverter.parseData(dataStr, fields, 95)
+    const result = await fileConverter.parseData(dataStr, fields, 96)
     expect(result).toBeDefined()
   })
 
@@ -38,7 +38,7 @@ describe('ConvertCsvToEntitieService', () => {
     const filePath = path.join(__dirname, '..', '..', 'files', 'data_2.txt')
     fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
     const dataStr = await fileConverter.convertFileToJSON()
-    const result = await fileConverter.parseData(dataStr, fields, 95)
+    const result = await fileConverter.parseData(dataStr, fields, 96)
 
     expect(result).toBeDefined()
   })

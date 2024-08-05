@@ -27,7 +27,7 @@ describe('CreateProductTransactionUseCase', () => {
   })
 
   afterAll(async () => {
-    await productTransactionRepository.deleteAll()
+    //await productTransactionRepository.deleteAll()
   })
     
 })

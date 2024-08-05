@@ -18,9 +18,10 @@ export class ConvertFileService<T> implements IConvertFileService<T> {
   }
   
   async parseData(data: string, fields: FieldLineDTO[], lineLength: number): Promise<T[]> {
-    const lines = data.split('\n').filter(line => line.trim() !== '' && line.length === lineLength)
+    const lines = data.split('\n').filter((line) => {
+      return line.trim() !== '' && line.length === lineLength
+    } )
     const listObject: T[] = []
-  
     for (const line of lines) {
       const obj: any = {}
   
