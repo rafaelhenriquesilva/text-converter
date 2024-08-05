@@ -1,6 +1,9 @@
 import { FieldLineDTO } from "../../../domain/dtos/FieldLineDTO"
 import {promises}  from 'fs'
 import { IConvertFileService } from "../../../domain/interfaces/services/file/IConvertFileService"
+/**
+ * @description Facilitar a Conversão do Arquivo
+ */
 export class ConvertFileService<T> implements IConvertFileService<T> {
   constructor(private filePath: string) {}
   
