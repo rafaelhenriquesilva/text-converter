@@ -1,18 +1,17 @@
 {
   "name": "text-converter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
-  "bin": {
-    "inicia-pra-eu": "./dist/index.js"
-  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "npx eslint . --fix",
-    "test": "jest --coverage --verbose --detectOpenHandles --runInBand",
-    "test:watch": "jest --watch",
-    "dev": "ts-node src/index.ts"
+    "test": "jest --config jest.config.js --coverage --verbose --detectOpenHandles --runInBand",
+    "test:watch": "jest --config jest.config.js --watch",
+    "dev": "ts-node src/index.ts",
+    "migration:up": "node dist/scripts/migrations/migration-up.js",
+    "migration:down": "node dist/scripts/migrations/migration-down.js"
   },
   "keywords": [],
   "author": "",
@@ -29,15 +28,9 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "chalk": "^2.4.2",
-    "cli-table": "^0.3.1",
-    "commander": "^2.19.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
-    "figlet": "^1.2.1",
-    "inquirer": "^6.2.2",
     "pg": "^8.12.0",
-    "pg-promise": "^11.8.0",
-    "shelljs": "^0.8.3"
+    "pg-promise": "^11.8.0"
   }
 }

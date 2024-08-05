@@ -3,10 +3,19 @@ import { CreateProductTransactionMigration } from "./product-transaction/CreateP
 
 export class Migrations {
   async execute() {
-    await CreateProductTransactionMigration.execute()
+    try {
+      await CreateProductTransactionMigration.execute()
+    } catch(error) {
+      console.error('Error running migration up:', error);
+    }
   }
 
   async reset() {
-    await CreateProductTransactionMigration.reset()
+    try {
+      await CreateProductTransactionMigration.reset()
+    } catch(error) {
+      console.error('Error running migration down:', error);
+    }
+   
   }
 }
