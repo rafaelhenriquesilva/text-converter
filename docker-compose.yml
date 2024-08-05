@@ -8,10 +8,20 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_DB: luizalabs
-      POSTGRES_USER: rafael.candido
+      POSTGRES_USER: user.integration
       POSTGRES_PASSWORD: 1234test
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-luizalabs:/var/lib/postgresql/data
+
+  db_test:
+    image: postgres:latest
+    container_name: luizalabs-db-test
+    ports:
+      - "5433:5432"  # Mapeia a porta 5432 do container para 5433 no host
+    environment:
+      POSTGRES_DB: luizalabstest
+      POSTGRES_USER: user.integration
+      POSTGRES_PASSWORD: 1234test
 
 volumes:
-  postgres-data:
+  postgres-luizalabs:

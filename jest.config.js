@@ -1,7 +1,9 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  setupFiles: ['./jest.setup.ts'],
+  setupFiles: ['./jest.setup.js'],
+  globalSetup: './jest.global-setup.js',
+  globalTeardown: './jest.global-teardown.js',
   testMatch: [
     "**/__tests__/**/*.spec.ts",
     "**/__tests__/**/*.test.ts",
@@ -10,7 +12,7 @@ module.exports = {
   ],
   testPathIgnorePatterns: [
     "/node_modules/",
-    "/__tests__/.*(?<!\\.spec|\\.test)\\.ts$"
+    "/dist/"
   ],
   moduleFileExtensions: ['ts', 'js'],
   transform: {
@@ -23,7 +25,8 @@ module.exports = {
     'src/**/*.{ts,js}',
     '!src/infra/**',
     '!src/**/index.ts',
-    '!src/**/clone.ts'
+    '!src/**/clone.ts',
+    '!scripts/**/*.{ts,js}'
   ],
   coverageThreshold: {
     global: {
