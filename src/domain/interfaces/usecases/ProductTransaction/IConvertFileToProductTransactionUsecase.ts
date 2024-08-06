@@ -1,7 +1,7 @@
 import { ProductTransactionEntity } from "../../../entities/ProductTransactionEntity"
 
 export interface IConvertFileToProductTransactionUsecase {
-    handle(contentStr: string): Promise<OutputConvertFileToProductTransaction>
+    handle(): Promise<OutputConvertFileToProductTransaction>
 }
 
 export interface OutputConvertFileToProductTransaction {

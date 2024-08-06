@@ -14,8 +14,9 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
     this.service = service
   }
 
-  async handle(contentStr: string): Promise<OutputConvertFileToProductTransaction> {
+  async handle(): Promise<OutputConvertFileToProductTransaction> {
     const fileFields = this.mappingFileFields()
+    const contentStr = await this.service.convertFileToJSON(fileFields, 96)
     const listProductTransactionRow: ProductTransactionRow[] = await this.service.parseData(contentStr, fileFields, 96)
     const listProductTransaction: ProductTransactionEntity[] = []
     const listInvalidRecord: any[] = []

@@ -19,15 +19,14 @@ describe('CreateProductTransactionUseCase', () => {
     convertFileToProductTransactionUsecase = new ConvertFileToProductTransactionUsecase(fileConverter)
   })
   it('CreateProductTransactionUseCase handle', async() => {
-    const contentStr = await fileConverter.convertFileToJSON()
-    const convertResult = await convertFileToProductTransactionUsecase.handle(contentStr)
+    const convertResult = await convertFileToProductTransactionUsecase.handle()
     await createProductTransactionUseCase.handle(convertResult.listProductTransaction)
     const productTransactions = await productTransactionRepository.listAll()
     expect(productTransactions.length > 0).toBe(true)
   })
 
   afterAll(async() => {
-    //await productTransactionRepository.deleteAll()
+    await productTransactionRepository.deleteAll()
   })
     
 })

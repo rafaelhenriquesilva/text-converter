@@ -1,4 +1,3 @@
-import fs from 'fs/promises'
 import path from 'path'
 import { ProductTransactionRepository } from './infra/database/pg-promise/repositories/ProductTransactionRepository'
 import { CreateProductTransactionUseCase } from './app/usecases/ProductTransaction/CreateProductTransactionUsecase'
@@ -6,6 +5,7 @@ import { ConvertFileToProductTransactionUsecase } from './app/usecases/ProductTr
 import { ProductTransactionRow } from './domain/interfaces/usecases/ProductTransaction/IConvertFileToProductTransactionUsecase'
 import { ConvertFileService } from './app/services/file-converter/ConvertFileService'
 import { FastifyAdapter } from './infra/adapters/http/FastifyAdapter'
+import CreateProductTransactionController from './app/controllers/ProductTransaction/CreateProductTransactionController'
 
 const app = new FastifyAdapter()
 
@@ -21,17 +21,14 @@ app.postFile('/upload', async(data) => {
     const createProductTransactionUseCase = new CreateProductTransactionUseCase(productTransactionRepository)
     const convertFileToProductTransactionUsecase = new ConvertFileToProductTransactionUsecase(fileConverter)
 
-    const contentStr = await fileConverter.convertFileToJSON()
-    const convertResult = await convertFileToProductTransactionUsecase.handle(contentStr)
-    await createProductTransactionUseCase.handle(convertResult.listProductTransaction)
-    const productTransactions = await productTransactionRepository.listAll()
+    const controller = new CreateProductTransactionController(
+      convertFileToProductTransactionUsecase,
+      createProductTransactionUseCase
+    )
 
-    await fs.unlink(filePath)
+    const result = await controller.execute()
 
-    return {
-      body: productTransactions,
-      statusCode: 200
-    }
+    return result
   } catch (error) {
     console.error('Erro ao processar o arquivo:', error)
     throw new Error('Erro ao processar o arquivo')
