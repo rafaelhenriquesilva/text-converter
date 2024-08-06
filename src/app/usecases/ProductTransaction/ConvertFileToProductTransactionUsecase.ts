@@ -18,7 +18,7 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
     const fileFields = this.mappingFileFields()
     const contentStr = await this.service.convertFileToJSON(fileFields, 96)
     const listProductTransactionRow: ProductTransactionRow[] = await this.service.parseData(contentStr, fileFields, 96)
-    const listProductTransaction: ProductTransactionEntity[] = []
+    let listProductTransaction: ProductTransactionEntity[] = []
     const listInvalidRecord: any[] = []
 
     for (const row of listProductTransactionRow) {
@@ -30,24 +30,60 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
       }
     }
 
+    listProductTransaction = this.mergeDuplicateTransactions(listProductTransaction)
+
     return {
       listInvalidRecord,
       listProductTransaction
     }
 
   }
+
   createProductTransactionByRow(row: ProductTransactionRow) {
+    const clientName = row.clientName.replace(/'/g, `''`)
+    const idOrder = parseInt(row.idOrder)
+    const idProduct = parseInt(row.idProduct)
+    const idUser = parseInt(row.idUser)
+    const transactionDate = new Date(formatStringDateYYYYMMDD(row.transactionDate))
+
     return new ProductTransactionEntity({
       id: '',
-      idOrder: parseInt(row.idOrder),
-      idProduct: parseInt(row.idProduct),
-      idUser: parseInt(row.idUser),
-      clientName: row.clientName.replace(/'/g, `''`),
+      idOrder,
+      idProduct,
+      idUser,
+      clientName,
       productValue: parseFloat(row.valueProduct),
-      transactionDate: new Date(formatStringDateYYYYMMDD(row.transactionDate)),
+      transactionDate,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
+  }
+
+  mergeDuplicateTransactions(transactions: ProductTransactionEntity[]): ProductTransactionEntity[] {
+    const uniqueTransactionsMap: Map<string, ProductTransactionEntity> = new Map();
+  
+    transactions.forEach(transaction => {
+      const existingTransaction = uniqueTransactionsMap.get(transaction.uniqueIdentifier);
+  
+      if (existingTransaction) {
+        existingTransaction.productValue += transaction.productValue;
+        existingTransaction.updatedAt = new Date(); 
+      } else {
+        uniqueTransactionsMap.set(transaction.uniqueIdentifier,  new ProductTransactionEntity({
+          clientName: transaction.clientName, 
+          idProduct: transaction.idProduct, 
+          productValue: transaction.productValue, 
+          createdAt: transaction.createdAt, 
+          transactionDate: transaction.transactionDate, 
+          updatedAt: transaction.updatedAt, 
+          idUser: transaction.idUser, 
+          id: transaction.id, 
+          idOrder: transaction.idOrder, 
+        }));
+      }
+    });
+  
+    return Array.from(uniqueTransactionsMap.values());
   }
 
 

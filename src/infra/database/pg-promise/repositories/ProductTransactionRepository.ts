@@ -13,6 +13,28 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     this.tableName = 'public.product_transaction'
   }
 
+  async findByUniqueIdentifiers(uniqueIdentifiers: string[]): Promise<ProductTransactionEntity[]> {
+
+    const uniqueIdentifiersStr = uniqueIdentifiers.map(unique => `'${unique}'`).join(',')
+    const query = `
+        select
+                  id,
+                  client_name,
+                  id_user,
+                  id_product,
+                  id_order,
+                  product_value,
+                  transaction_date,
+                  created_at,
+                  updated_at
+        from product_transaction pt 
+        where unique_identifier in (${uniqueIdentifiersStr})
+      `
+    const SchemaModel = await this.connection.query(query)
+
+    return SchemaModel.map((row: any) => this.mapRowToEntity(row))
+  }
+
   async deleteAll(): Promise<void> {
     await this.connection.delete({
       table: this.tableName
@@ -70,19 +92,19 @@ export class ProductTransactionRepository implements IProductTransactionReposito
   async insert(input: ProductTransactionEntity[]): Promise<void> {
     const fieldsoInsert: QueryField[][] = []
 
-    for ( const data of input) {
+    for (const data of input) {
       fieldsoInsert.push([
-        
+
         { name: `client_name`, value: data.clientName },
         { name: 'id_product', value: data.idProduct },
         { name: 'product_value', value: data.productValue },
         {
           name: 'transaction_date', value:
-              data.transactionDate ? formatDateYYYYMMDD(data.transactionDate) : null
+            data.transactionDate ? formatDateYYYYMMDD(data.transactionDate) : null
         },
         { name: 'id_user', value: data.idUser },
         { name: 'id_order', value: data.idOrder },
-        
+
       ])
     }
 
@@ -97,11 +119,11 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     await this.connection.update({
       fields:
         [{ name: 'client_name', value: input.clientName },
-          { name: 'id_product', value: input.idProduct },
-          { name: 'product_value', value: input.productValue },
-          { name: 'transaction_date', value: input.transactionDate },
-          { name: 'id_user', value: input.idUser },
-          { name: 'id_order', value: input.idOrder },
+        { name: 'id_product', value: input.idProduct },
+        { name: 'product_value', value: input.productValue },
+        { name: 'transaction_date', value: input.transactionDate },
+        { name: 'id_user', value: input.idUser },
+        { name: 'id_order', value: input.idOrder },
         ], table: this.tableName,
       where: [{
         name: 'id',

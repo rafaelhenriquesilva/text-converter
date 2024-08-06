@@ -1,19 +1,25 @@
 
+import { formatDateYYYYMMDD } from '../../infra/util/DateUtil'
 import { ProductTransactionDTO } from '../dtos/ProductTransactionDTO'
 export class ProductTransactionEntity 
 {
         
   private readonly _clientName: string 
   private readonly _idProduct: number 
-  private readonly _productValue: number 
+  private _productValue: number 
+ 
   private readonly _createdAt: Date 
   private readonly _transactionDate: Date 
-  private readonly _updatedAt: Date 
+  private _updatedAt: Date 
+ 
   private readonly _idUser: number 
   private readonly _id: string 
   private readonly _idOrder: number 
+  private _uniqueIdentifier: string
+  
+ 
 
-  constructor(dto: ProductTransactionDTO) { 
+  constructor(dto: Omit<ProductTransactionDTO, 'uniqueIdentifier'>) { 
     this._clientName = dto.clientName 
     this._idProduct = dto.idProduct 
     this._productValue = dto.productValue 
@@ -23,6 +29,7 @@ export class ProductTransactionEntity
     this._idUser = dto.idUser 
     this._id = dto.id 
     this._idOrder = dto.idOrder 
+    this._uniqueIdentifier = this.createUniqueIdentifier()
   }
 
   public get clientName(): string {
@@ -33,9 +40,31 @@ export class ProductTransactionEntity
     return this._idProduct
   } 
 
+  public get uniqueIdentifier(): string {
+    return this._uniqueIdentifier
+  }
+
+  /**
+   * @rule Para identificar a transação como unica é concatenado os seguintes campos
+   * @field clientName - Nome do cliente
+   * @field idProduct- Identificador do produto
+   * @field idUser- Identificador do usuário
+   * @field idOrder - Identificador do pedido
+   * @field transactionDate - Data da transação no formato YYYY-MM-DD
+   * @returns identificador unico da transção
+   */
+  public createUniqueIdentifier(): string {
+    this._uniqueIdentifier =  `${this.clientName}_${this.idProduct}_${this.idUser}_${this.idOrder}_${formatDateYYYYMMDD(this.transactionDate)}`
+    return this._uniqueIdentifier
+  }
+
+
   public get productValue(): number {
     return this._productValue
-  } 
+  }
+  public set productValue(value: number) {
+    this._productValue = value
+  }
 
   public get createdAt(): Date {
     return this._createdAt
@@ -44,10 +73,12 @@ export class ProductTransactionEntity
   public get transactionDate(): Date {
     return this._transactionDate
   } 
-
   public get updatedAt(): Date {
     return this._updatedAt
-  } 
+  }
+  public set updatedAt(value: Date) {
+    this._updatedAt = value
+  }
 
   public get idUser(): number {
     return this._idUser
@@ -60,6 +91,9 @@ export class ProductTransactionEntity
   public get idOrder(): number {
     return this._idOrder
   } 
+
+  
+
   toJson(): ProductTransactionDTO {
     return {
       clientName: this.clientName, 
@@ -67,6 +101,7 @@ export class ProductTransactionEntity
       productValue: this.productValue, 
       createdAt: this.createdAt, 
       transactionDate: this.transactionDate, 
+      uniqueIdentifier: this.uniqueIdentifier,
       updatedAt: this.updatedAt, 
       idUser: this.idUser, 
       id: this.id, 

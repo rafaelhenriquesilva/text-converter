@@ -22,7 +22,6 @@ export const createProductTransactionMock = () => {
     idOrder: faker.number.int({
       min: 10,
       max: 999
-    }),
-
+    })
   })
 }
