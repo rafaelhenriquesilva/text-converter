@@ -26,6 +26,7 @@ describe('Create Product Transaction Controller', () => {
     const result = await controller.execute()
 
     expect(result.statusCode).toBe(200)
+    expect(result.body.itemsInvalid.size).toBe(1)
   }, 15000)
 
   it('should to request with error to search file', async() => {

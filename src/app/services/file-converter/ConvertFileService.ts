@@ -14,7 +14,7 @@ import { IConvertFileService } from "../../../domain/interfaces/services/file/IC
  * ```typescript
  * const service = new ConvertFileService<MyType>('/path/to/file.txt');
  * const jsonData = await service.convertFileToJSON();
- * const objects = await service.parseData(jsonData, fields, lineLength);
+ * const objects = await service.parseData(jsonData, fields);
  * ```
  */
 export class ConvertFileService<T> implements IConvertFileService<T> {
@@ -47,13 +47,12 @@ export class ConvertFileService<T> implements IConvertFileService<T> {
    * 
    * @param data - Conteúdo do arquivo como uma string.
    * @param fields - Definições de campos a serem extraídos dos dados, incluindo índices de início e fim.
-   * @param lineLength - Comprimento esperado de cada linha no arquivo.
    * @returns Uma promessa que resolve com uma lista de objetos do tipo T.
    */
-  async parseData(data: string, fields: FieldLineDTO[], lineLength: number): Promise<T[]> {
+  async parseData(data: string, fields: FieldLineDTO[]): Promise<T[]> {
     // Divide o conteúdo do arquivo em linhas, removendo linhas vazias e com comprimento diferente do esperado
     const lines = data.split('\n').filter((line) => {
-      return line.trim() !== '' && line.length === lineLength;
+      return line.trim() !== ''
     });
 
     // Lista para armazenar os objetos resultantes
