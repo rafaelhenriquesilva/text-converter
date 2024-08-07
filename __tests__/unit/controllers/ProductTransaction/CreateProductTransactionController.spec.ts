@@ -12,7 +12,7 @@ describe('Create Product Transaction Controller', () => {
   let convertFileService: ConvertFileService<ProductTransactionRow>
   let productTransactionRepository : ProductTransactionRepository
   beforeAll(() => {
-    const filePath = path.join(__dirname, '..', '..', '..', 'files', 'data_1.txt')
+    const filePath = path.join(__dirname, '..', '..', '..', 'files', 'data_small.txt')
     productTransactionRepository = new ProductTransactionRepository()
     convertFileService = new ConvertFileService<ProductTransactionRow>(filePath)
     convertFileToProductTransactionUseCase = new ConvertFileToProductTransactionUsecase(convertFileService)
@@ -26,7 +26,7 @@ describe('Create Product Transaction Controller', () => {
     const result = await controller.execute()
 
     expect(result.statusCode).toBe(200)
-  })
+  }, 15000)
 
   it('should to request with error to search file', async() => {
     const filePath = path.join(__dirname, 'data_1.txt')

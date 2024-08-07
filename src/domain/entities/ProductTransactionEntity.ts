@@ -4,7 +4,8 @@ import { ProductTransactionDTO } from '../dtos/ProductTransactionDTO'
 export class ProductTransactionEntity 
 {
         
-  private readonly _clientName: string 
+  private _clientName: string 
+  
   private readonly _idProduct: number 
   private _productValue: number 
  
@@ -36,6 +37,10 @@ export class ProductTransactionEntity
     return this._clientName
   } 
 
+  public set clientName(value: string) {
+    this._clientName = value
+  }
+  
   public get idProduct(): number {
     return this._idProduct
   } 

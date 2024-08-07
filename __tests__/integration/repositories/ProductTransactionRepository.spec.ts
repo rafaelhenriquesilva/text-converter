@@ -26,7 +26,7 @@ describe('ProductTransactionRepository Actions', () => {
     
     dataId = itemInserted && itemInserted.length > 0 && typeof itemInserted[0]?.id == 'string' ? itemInserted[0]?.id : '' 
     expect(itemInserted[0]?.id).toBeDefined()
-  }, 15000)
+  })
 
   it('ProductTransactionRepository Find By Unique identifier', async() => {
     const result = await repository.findByUniqueIdentifiers([data.uniqueIdentifier])
@@ -53,7 +53,6 @@ describe('ProductTransactionRepository Actions', () => {
 
   it('ProductTransactionRepository Find By Id', async() => {
     const result = await repository.findById(dataId)
-    console.info(result[0].uniqueIdentifier)
     expect(result.length).toBe(1)
     expect(result[0].clientName).toBe(mockToUpdate.clientName) 
     expect(result[0].idProduct).toBe(mockToUpdate.idProduct) 

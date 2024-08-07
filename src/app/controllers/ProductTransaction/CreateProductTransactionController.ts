@@ -19,15 +19,21 @@ export default class CreateProductTransactionController {
   async execute(): Promise<IHttpResponse> {
     try {
       const convertResult = await this.convertFileUseCase.handle()
-      await this.createProductTransactionUseCase.handle(convertResult.listProductTransaction)
+      const productTransactionInformation = await this.createProductTransactionUseCase.handle(convertResult.listProductTransaction)
 
       return ok({
-        itemsInserted: {
-          size: convertResult.listProductTransaction.length
-        },
         itemsInvalid: {
           size: convertResult.listInvalidRecord.length,
           data: convertResult.listInvalidRecord
+        },
+        itemsInserted: {
+          size: productTransactionInformation.itemsInserted.size
+        },
+       
+        itemsDuplicated: productTransactionInformation.itemsDuplicated,
+        itemFailed: {
+            size: productTransactionInformation.itemsFailed.size,
+            data: productTransactionInformation.failedTransactions
         }
       })
     } catch (error: any) {
