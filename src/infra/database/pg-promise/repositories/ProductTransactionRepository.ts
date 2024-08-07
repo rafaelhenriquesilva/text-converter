@@ -162,3 +162,4 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     return tableFields;
   }
 }
+

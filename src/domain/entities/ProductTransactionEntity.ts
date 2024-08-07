@@ -59,8 +59,10 @@ export class ProductTransactionEntity
    * @returns identificador unico da transção
    */
   public createUniqueIdentifier(): string {
-    this._uniqueIdentifier =  `${this.clientName}_${this.idProduct}_${this.idUser}_${this.idOrder}_${formatDateYYYYMMDD(this.transactionDate)}`
-    return this._uniqueIdentifier
+    // Sanitiza clientName para evitar problemas com aspas simples
+    const sanitizedClientName = this.clientName.replace(/'/g, `''`);
+    this._uniqueIdentifier = `${sanitizedClientName}_${this.idProduct}_${this.idUser}_${this.idOrder}_${formatDateYYYYMMDD(this.transactionDate)}`;
+    return this._uniqueIdentifier;
   }
 
 
