@@ -1,4 +1,4 @@
-import {PostgresQueryAdapter} from '../../../../../src/infra/adapters/postgres-query-adapter'
+import {PostgresQueryAdapter} from '../../../../../src/infra/adapters/postgres/postgres-query-adapter'
 describe('Delete Query Util Mehods', () =>  {
 
   it('create a delete query with where equal', () => {

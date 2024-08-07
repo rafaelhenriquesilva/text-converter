@@ -1,4 +1,4 @@
-import { DeleteQueryInterface, InsertQueryInterface, QueryField, SelectQueryInterface, SimpleField, UpdateQueryInterface } from "../database/@shared/query-interface"
+import { DeleteQueryInterface, InsertQueryInterface, QueryField, SelectQueryInterface, SimpleField, UpdateQueryInterface } from "../../database/@shared/query-interface"
 
 export class PostgresQueryAdapter {
   static find(input: SelectQueryInterface): string {

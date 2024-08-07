@@ -1,5 +1,5 @@
 
-import path, { dirname } from 'path'
+import path from 'path'
 import { ConvertFileService } from '../../../src/app/services/file-converter/ConvertFileService'
 import { FieldLineDTO } from '../../../src/domain/dtos/FieldLineDTO'
 
@@ -30,7 +30,7 @@ describe('ConvertCsvToEntitieService', () => {
     const filePath = path.join(__dirname, '..', '..', 'files', 'data_1.txt')
     fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
     const dataStr = await fileConverter.convertFileToJSON()
-    const result = await fileConverter.parseData(dataStr, fields, 96)
+    const result = await fileConverter.parseData(dataStr, fields)
     expect(result).toBeDefined()
   })
 
@@ -38,7 +38,7 @@ describe('ConvertCsvToEntitieService', () => {
     const filePath = path.join(__dirname, '..', '..', 'files', 'data_2.txt')
     fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
     const dataStr = await fileConverter.convertFileToJSON()
-    const result = await fileConverter.parseData(dataStr, fields, 96)
+    const result = await fileConverter.parseData(dataStr, fields)
 
     expect(result).toBeDefined()
   })

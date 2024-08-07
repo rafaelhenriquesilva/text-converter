@@ -12,9 +12,8 @@ describe('ConvertCsvToEntitieService', () => {
     const filePath = path.join(__dirname,  '..', '..', '..', 'files', 'data_1.txt')
     fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
     usecase = new ConvertFileToProductTransactionUsecase(fileConverter)
-    const dataStr = await fileConverter.convertFileToJSON()
-    const result = await usecase.handle(dataStr)
-    expect(result.listProductTransaction.length).toBe(2352)
+    const result = await usecase.handle()
+    expect(result.listProductTransaction.length).toBe(2065)
     expect(result.listInvalidRecord.length).toBe(0)
   })
 
@@ -22,9 +21,8 @@ describe('ConvertCsvToEntitieService', () => {
     const filePath = path.join(__dirname,  '..', '..', '..', 'files', 'data_2.txt')
     fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
     usecase = new ConvertFileToProductTransactionUsecase(fileConverter)
-    const dataStr = await fileConverter.convertFileToJSON()
-    const result = await usecase.handle(dataStr)
-    expect(result.listProductTransaction.length).toBe(3870)
+    const result = await usecase.handle()
+    expect(result.listProductTransaction.length).toBe(3431)
     expect(result.listInvalidRecord.length).toBe(0)
   })
 

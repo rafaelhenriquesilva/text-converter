@@ -17,4 +17,6 @@ export interface ProductTransactionDTO {
     idUser: number
     id: string
     idOrder: number
+    uniqueIdentifier:string
+
 }

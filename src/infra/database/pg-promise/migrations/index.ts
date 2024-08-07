@@ -6,7 +6,7 @@ export class Migrations {
     try {
       await CreateProductTransactionMigration.execute()
     } catch(error) {
-      console.error('Error running migration up:', error);
+      console.error('Error running migration up:', error)
     }
   }
 
@@ -14,7 +14,7 @@ export class Migrations {
     try {
       await CreateProductTransactionMigration.reset()
     } catch(error) {
-      console.error('Error running migration down:', error);
+      console.error('Error running migration down:', error)
     }
    
   }

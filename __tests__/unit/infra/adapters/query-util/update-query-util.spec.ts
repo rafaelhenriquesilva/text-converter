@@ -1,4 +1,4 @@
-import {PostgresQueryAdapter} from '../../../../../src/infra/adapters/postgres-query-adapter'
+import {PostgresQueryAdapter} from '../../../../../src/infra/adapters/postgres/postgres-query-adapter'
 describe('Update Query Util Mehods', () =>  {
   it('create a update query with where equal', () => {
     const query = PostgresQueryAdapter.update({

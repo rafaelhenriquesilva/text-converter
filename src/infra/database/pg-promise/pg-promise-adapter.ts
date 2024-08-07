@@ -1,13 +1,13 @@
-import pgPromise, { IDatabase, IMain } from 'pg-promise'
+import pgPromise, { IDatabase, IMain, ITask } from 'pg-promise'
 import { DeleteQueryInterface, InsertQueryInterface, SelectQueryInterface, UpdateQueryInterface } from '../@shared/query-interface'
-import { PostgresQueryAdapter } from '../../adapters/postgres-query-adapter'
+import { PostgresQueryAdapter } from '../../adapters/postgres/postgres-query-adapter'
 
 interface ConnectionConfig {
-    host: string;
-    port: number;
-    database: string;
-    user: string;
-    password: string;
+  host: string;
+  port: number;
+  database: string;
+  user: string;
+  password: string;
 }
 
 export default class PgPromiseAdapter {
@@ -44,6 +44,10 @@ export default class PgPromiseAdapter {
 
   async delete(input: DeleteQueryInterface): Promise<any[]> {
     return this.query(PostgresQueryAdapter.delete(input))
+  }
+
+  async runInTransaction<T>(taskFn: (task: ITask<any>) => Promise<T>): Promise<T> {
+    return this.db.tx(taskFn)
   }
 
   async close() {
