@@ -1,8 +1,8 @@
-import { FieldLineDTO } from "../../../domain/dtos/FieldLineDTO";
-import { ProductTransactionEntity } from "../../../domain/entities/ProductTransactionEntity";
-import { IConvertFileService } from "../../../domain/interfaces/services/file/IConvertFileService";
-import { IConvertFileToProductTransactionUsecase, OutputConvertFileToProductTransaction, ProductTransactionRow } from "../../../domain/interfaces/usecases/ProductTransaction/IConvertFileToProductTransactionUsecase";
-import { formatStringDateYYYYMMDD } from "../../../infra/util/DateUtil";
+import { FieldLineDTO } from "../../../domain/dtos/FieldLineDTO"
+import { ProductTransactionEntity } from "../../../domain/entities/ProductTransactionEntity"
+import { IConvertFileService } from "../../../domain/interfaces/services/file/IConvertFileService"
+import { IConvertFileToProductTransactionUsecase, OutputConvertFileToProductTransaction, ProductTransactionRow } from "../../../domain/interfaces/usecases/ProductTransaction/IConvertFileToProductTransactionUsecase"
+import { formatStringDateYYYYMMDD } from "../../../infra/util/DateUtil"
 
 /**
  * Caso de uso para converter um arquivo em registros de transação de produtos.
@@ -19,7 +19,7 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
    * 
    * @private
    */
-  private service: IConvertFileService<ProductTransactionRow>;
+  private service: IConvertFileService<ProductTransactionRow>
 
   /**
    * Construtor para a classe `ConvertFileToProductTransactionUsecase`.
@@ -27,7 +27,7 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
    * @param service - Serviço que realiza a conversão de arquivo para objetos.
    */
   constructor(service: IConvertFileService<ProductTransactionRow>) {
-    this.service = service;
+    this.service = service
   }
 
   /**
@@ -38,28 +38,28 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
    * @returns Um objeto contendo listas de registros inválidos e transações de produtos criadas.
    */
   async handle(): Promise<OutputConvertFileToProductTransaction> {
-    const fileFields = this.mappingFileFields();
-    const contentStr = await this.service.convertFileToJSON(fileFields);
-    const listProductTransactionRow: ProductTransactionRow[] = await this.service.parseData(contentStr, fileFields);
+    const fileFields = this.mappingFileFields()
+    const contentStr = await this.service.convertFileToJSON(fileFields)
+    const listProductTransactionRow: ProductTransactionRow[] = await this.service.parseData(contentStr, fileFields)
 
-    let listProductTransaction: ProductTransactionEntity[] = [];
-    const listInvalidRecord: any[] = [];
+    let listProductTransaction: ProductTransactionEntity[] = []
+    const listInvalidRecord: any[] = []
 
     for (const row of listProductTransactionRow) {
       try {
-        const productTransaction = this.createProductTransactionByRow(row);
-        listProductTransaction.push(productTransaction);
+        const productTransaction = this.createProductTransactionByRow(row)
+        listProductTransaction.push(productTransaction)
       } catch {
-        listInvalidRecord.push(row);
+        listInvalidRecord.push(row)
       }
     }
 
-    listProductTransaction = this.mergeDuplicateTransactions(listProductTransaction);
+    listProductTransaction = this.mergeDuplicateTransactions(listProductTransaction)
 
     return {
       listInvalidRecord,
       listProductTransaction
-    };
+    }
   }
 
   /**
@@ -69,11 +69,11 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
    * @returns Uma instância de `ProductTransactionEntity`.
    */
   createProductTransactionByRow(row: ProductTransactionRow): ProductTransactionEntity {
-    const clientName = row.clientName.replace(/'/g, `''`);
-    const idOrder = parseInt(row.idOrder);
-    const idProduct = parseInt(row.idProduct);
-    const idUser = parseInt(row.idUser);
-    const transactionDate = new Date(formatStringDateYYYYMMDD(row.transactionDate));
+    const clientName = row.clientName.replace(/'/g, `''`)
+    const idOrder = parseInt(row.idOrder)
+    const idProduct = parseInt(row.idProduct)
+    const idUser = parseInt(row.idUser)
+    const transactionDate = new Date(formatStringDateYYYYMMDD(row.transactionDate))
 
     const productTransaction = new ProductTransactionEntity({
       id: '',
@@ -85,11 +85,11 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
       transactionDate,
       createdAt: new Date(),
       updatedAt: new Date(),
-    });
+    })
 
-    productTransaction.createUniqueIdentifier();
+    productTransaction.createUniqueIdentifier()
 
-    return productTransaction;
+    return productTransaction
   }
 
   /**
@@ -99,14 +99,14 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
    * @returns Lista de transações de produtos sem duplicatas.
    */
   mergeDuplicateTransactions(transactions: ProductTransactionEntity[]): ProductTransactionEntity[] {
-    const uniqueTransactionsMap: Map<string, ProductTransactionEntity> = new Map();
+    const uniqueTransactionsMap: Map<string, ProductTransactionEntity> = new Map()
   
     transactions.forEach(transaction => {
-      const existingTransaction = uniqueTransactionsMap.get(transaction.uniqueIdentifier);
+      const existingTransaction = uniqueTransactionsMap.get(transaction.uniqueIdentifier)
   
       if (existingTransaction) {
-        existingTransaction.productValue += transaction.productValue;
-        existingTransaction.updatedAt = new Date(); 
+        existingTransaction.productValue += transaction.productValue
+        existingTransaction.updatedAt = new Date() 
       } else {
         uniqueTransactionsMap.set(transaction.uniqueIdentifier, new ProductTransactionEntity({
           clientName: transaction.clientName, 
@@ -118,11 +118,11 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
           idUser: transaction.idUser, 
           id: transaction.id, 
           idOrder: transaction.idOrder, 
-        }));
+        }))
       }
-    });
+    })
   
-    return Array.from(uniqueTransactionsMap.values());
+    return Array.from(uniqueTransactionsMap.values())
   }
 
   /**
@@ -138,6 +138,6 @@ export class ConvertFileToProductTransactionUsecase implements IConvertFileToPro
       { name: 'idProduct', startIndex: 65, endIndex: 75 },
       { name: 'valueProduct', startIndex: 75, endIndex: 87 },
       { name: 'transactionDate', startIndex: 87, endIndex: 95 },
-    ];
+    ]
   }
 }

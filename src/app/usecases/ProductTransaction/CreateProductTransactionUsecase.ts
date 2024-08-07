@@ -1,6 +1,6 @@
-import { ProductTransactionEntity } from "../../../domain/entities/ProductTransactionEntity";
-import { IProductTransactionRepository } from "../../../domain/interfaces/repositories/ProductTransaction/IProductTransactionRepository";
-import { ICreateProductTransactionUseCase, OutputCreateProductTransaction } from "../../../domain/interfaces/usecases/ProductTransaction/ICreateProductTransactionUsecase";
+import { ProductTransactionEntity } from "../../../domain/entities/ProductTransactionEntity"
+import { IProductTransactionRepository } from "../../../domain/interfaces/repositories/ProductTransaction/IProductTransactionRepository"
+import { ICreateProductTransactionUseCase, OutputCreateProductTransaction } from "../../../domain/interfaces/usecases/ProductTransaction/ICreateProductTransactionUsecase"
 
 /**
  * Classe responsável pelo caso de uso de criação de transações de produtos.
@@ -22,14 +22,14 @@ export class CreateProductTransactionUseCase implements ICreateProductTransactio
    * 
    * @private
    */
-  private repository: IProductTransactionRepository;
+  private repository: IProductTransactionRepository
 
   /**
    * Tamanho do lote para inserção em massa.
    * 
    * @private
    */
-  private batchSize: number;
+  private batchSize: number
 
   /**
    * Construtor da classe.
@@ -38,8 +38,8 @@ export class CreateProductTransactionUseCase implements ICreateProductTransactio
    * @param batchSize - Número de transações a serem processadas em um único lote. O valor padrão é 50.
    */
   constructor(repository: IProductTransactionRepository, batchSize: number = 50) {
-    this.repository = repository;
-    this.batchSize = batchSize;
+    this.repository = repository
+    this.batchSize = batchSize
   }
 
   /**
@@ -56,22 +56,22 @@ export class CreateProductTransactionUseCase implements ICreateProductTransactio
    * @returns Resultado da operação, incluindo o número de transações inseridas, duplicadas e falhas.
    */
   async handle(input: ProductTransactionEntity[]): Promise<OutputCreateProductTransaction> {
-    console.info('Starting to handle product transactions...');
+    console.info('Starting to handle product transactions...')
 
-    const listUniqueIdentifiers = this.extractUniqueIdentifiers(input);
-    console.info('Extracted unique identifiers:', listUniqueIdentifiers.length);
+    const listUniqueIdentifiers = this.extractUniqueIdentifiers(input)
+    console.info('Extracted unique identifiers:', listUniqueIdentifiers.length)
 
-    const existingTransactions = await this.repository.findByUniqueIdentifiers(listUniqueIdentifiers);
-    console.info('Existing transactions found:', existingTransactions.length);
+    const existingTransactions = await this.repository.findByUniqueIdentifiers(listUniqueIdentifiers)
+    console.info('Existing transactions found:', existingTransactions.length)
 
-    const { newTransactions, duplicatedTransactions } = this.filterTransactions(input, existingTransactions);
+    const { newTransactions, duplicatedTransactions } = this.filterTransactions(input, existingTransactions)
 
-    console.info('New transactions to insert:', newTransactions.length);
-    console.info('Duplicated transactions:', duplicatedTransactions.length);
+    console.info('New transactions to insert:', newTransactions.length)
+    console.info('Duplicated transactions:', duplicatedTransactions.length)
 
-    const failedTransactions = await this.insertNewTransactions(newTransactions);
+    const failedTransactions = await this.insertNewTransactions(newTransactions)
 
-    return this.createHandleResult(newTransactions, duplicatedTransactions, failedTransactions);
+    return this.createHandleResult(newTransactions, duplicatedTransactions, failedTransactions)
   }
 
   /**
@@ -81,7 +81,7 @@ export class CreateProductTransactionUseCase implements ICreateProductTransactio
    * @returns Lista de identificadores únicos.
    */
   private extractUniqueIdentifiers(transactions: ProductTransactionEntity[]): string[] {
-    return transactions.map(transaction => transaction.uniqueIdentifier);
+    return transactions.map(transaction => transaction.uniqueIdentifier)
   }
 
   /**
@@ -95,12 +95,12 @@ export class CreateProductTransactionUseCase implements ICreateProductTransactio
     input: ProductTransactionEntity[],
     existingTransactions: ProductTransactionEntity[]
   ): { newTransactions: ProductTransactionEntity[], duplicatedTransactions: ProductTransactionEntity[] } {
-    const existingUniqueIdentifiers = new Set(existingTransactions.map(transaction => transaction.uniqueIdentifier));
+    const existingUniqueIdentifiers = new Set(existingTransactions.map(transaction => transaction.uniqueIdentifier))
 
-    const newTransactions = input.filter(transaction => !existingUniqueIdentifiers.has(transaction.uniqueIdentifier));
-    const duplicatedTransactions = input.filter(transaction => existingUniqueIdentifiers.has(transaction.uniqueIdentifier));
+    const newTransactions = input.filter(transaction => !existingUniqueIdentifiers.has(transaction.uniqueIdentifier))
+    const duplicatedTransactions = input.filter(transaction => existingUniqueIdentifiers.has(transaction.uniqueIdentifier))
 
-    return { newTransactions, duplicatedTransactions };
+    return { newTransactions, duplicatedTransactions }
   }
 
   /**
@@ -112,20 +112,20 @@ export class CreateProductTransactionUseCase implements ICreateProductTransactio
    * @returns Lista de transações que falharam durante a inserção.
    */
   private async insertNewTransactions(transactions: ProductTransactionEntity[]): Promise<ProductTransactionEntity[]> {
-    const failedTransactions: ProductTransactionEntity[] = [];
+    const failedTransactions: ProductTransactionEntity[] = []
 
     // Processar em lotes
     for (let i = 0; i < transactions.length; i += this.batchSize) {
-      const batch = transactions.slice(i, i + this.batchSize);
+      const batch = transactions.slice(i, i + this.batchSize)
       try {
-        await this.repository.insert(batch);
+        await this.repository.insert(batch)
       } catch (error) {
-        console.error(`Error inserting batch starting with unique identifier ${batch[0].uniqueIdentifier}:`, error);
-        failedTransactions.push(...batch); // Adicionar à lista de falhas
+        console.error(`Error inserting batch starting with unique identifier ${batch[0].uniqueIdentifier}:`, error)
+        failedTransactions.push(...batch) // Adicionar à lista de falhas
       }
     }
 
-    return failedTransactions;
+    return failedTransactions
   }
 
   /**
@@ -152,6 +152,6 @@ export class CreateProductTransactionUseCase implements ICreateProductTransactio
         size: failedTransactions.length
       },
       failedTransactions // Inclui os registros que falharam
-    };
+    }
   }
 }

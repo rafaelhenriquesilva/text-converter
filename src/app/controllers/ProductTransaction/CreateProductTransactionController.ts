@@ -32,8 +32,8 @@ export default class CreateProductTransactionController {
        
         itemsDuplicated: productTransactionInformation.itemsDuplicated,
         itemFailed: {
-            size: productTransactionInformation.itemsFailed.size,
-            data: productTransactionInformation.failedTransactions
+          size: productTransactionInformation.itemsFailed.size,
+          data: productTransactionInformation.failedTransactions
         }
       })
     } catch (error: any) {

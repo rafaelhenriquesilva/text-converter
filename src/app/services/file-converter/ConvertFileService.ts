@@ -34,11 +34,11 @@ export class ConvertFileService<T> implements IConvertFileService<T> {
    */
   async convertFileToJSON(): Promise<string> {
     try {
-      const data = await promises.readFile(this.filePath, 'utf8');
-      return data;
+      const data = await promises.readFile(this.filePath, 'utf8')
+      return data
     } catch (err) {
-      console.error('Erro ao ler o arquivo:', err);
-      throw err;
+      console.error('Erro ao ler o arquivo:', err)
+      throw err
     }
   }
   
@@ -53,28 +53,28 @@ export class ConvertFileService<T> implements IConvertFileService<T> {
     // Divide o conteúdo do arquivo em linhas, removendo linhas vazias e com comprimento diferente do esperado
     const lines = data.split('\n').filter((line) => {
       return line.trim() !== ''
-    });
+    })
 
     // Lista para armazenar os objetos resultantes
-    const listObject: T[] = [];
+    const listObject: T[] = []
     
     for (const line of lines) {
-      const obj: any = {};
+      const obj: any = {}
   
       // Cria um objeto a partir dos campos definidos e dos dados da linha
       for(const field of fields) {
-        obj[field.name] = line.slice(field.startIndex, field.endIndex);
+        obj[field.name] = line.slice(field.startIndex, field.endIndex)
       }
   
       // Remove espaços em branco dos valores do objeto
       for(const [key, value] of Object.entries(obj)) {
-        obj[key] = typeof value === 'string' ? value.trim() : value;
+        obj[key] = typeof value === 'string' ? value.trim() : value
       }
   
       // Adiciona o objeto à lista de resultados
-      listObject.push(obj);
+      listObject.push(obj)
     }
   
-    return listObject;
+    return listObject
   }
 }

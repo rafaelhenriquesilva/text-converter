@@ -60,9 +60,9 @@ export class ProductTransactionEntity
    */
   public createUniqueIdentifier(): string {
     // Sanitiza clientName para evitar problemas com aspas simples
-    const sanitizedClientName = this.clientName.replace(/'/g, `''`);
-    this._uniqueIdentifier = `${sanitizedClientName}_${this.idProduct}_${this.idUser}_${this.idOrder}_${formatDateYYYYMMDD(this.transactionDate)}`;
-    return this._uniqueIdentifier;
+    const sanitizedClientName = this.clientName.replace(/'/g, `''`)
+    this._uniqueIdentifier = `${sanitizedClientName}_${this.idProduct}_${this.idUser}_${this.idOrder}_${formatDateYYYYMMDD(this.transactionDate)}`
+    return this._uniqueIdentifier
   }
 
 

@@ -1,10 +1,10 @@
-import { ITask } from "pg-promise";
+import { ITask } from "pg-promise"
 import {
-    DeleteQueryInterface,
-    InsertQueryInterface,
-    SelectQueryInterface,
-    UpdateQueryInterface
-} from "./query-interface";
+  DeleteQueryInterface,
+  InsertQueryInterface,
+  SelectQueryInterface,
+  UpdateQueryInterface
+} from "./query-interface"
 
 export interface IDatabaseConnection {
     query(query: string, values?: any[]): Promise<any[]>;

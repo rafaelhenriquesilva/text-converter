@@ -2,7 +2,7 @@ import { DatabaseConnection } from "../../../database-connection"
 
 export class CreateProductTransactionMigration {
   static async execute() {
-    const connection = DatabaseConnection.getInstance();
+    const connection = DatabaseConnection.getInstance()
     await connection.query(`
       -- Cria a extensão uuid-ossp, se não existir
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -53,17 +53,17 @@ export class CreateProductTransactionMigration {
 
       -- Cria um índice único para a coluna unique_identifier
       CREATE UNIQUE INDEX unique_identifier_idx ON product_transaction(unique_identifier);
-    `);
+    `)
   }
 
   static async reset() {
-    const connection = DatabaseConnection.getInstance();
+    const connection = DatabaseConnection.getInstance()
     await connection.query(`
       DROP TRIGGER IF EXISTS update_product_transaction_updated_at ON product_transaction;
       DROP TRIGGER IF EXISTS generate_unique_identifier_trigger ON product_transaction;
       DROP TABLE IF EXISTS product_transaction;
       DROP FUNCTION IF EXISTS update_updated_at_column;
       DROP FUNCTION IF EXISTS generate_unique_identifier;
-    `);
+    `)
   }
 }
