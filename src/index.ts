@@ -1,40 +1,22 @@
-import path from 'path'
-import { ProductTransactionRepository } from './infra/database/pg-promise/repositories/ProductTransactionRepository'
-import { CreateProductTransactionUseCase } from './app/usecases/ProductTransaction/CreateProductTransactionUsecase'
-import { ConvertFileToProductTransactionUsecase } from './app/usecases/ProductTransaction/ConvertFileToProductTransactionUsecase'
-import { ProductTransactionRow } from './domain/interfaces/usecases/ProductTransaction/IConvertFileToProductTransactionUsecase'
-import { ConvertFileService } from './app/services/file-converter/ConvertFileService'
+
 import { FastifyAdapter } from './infra/adapters/http/FastifyAdapter'
-import CreateProductTransactionController from './app/controllers/ProductTransaction/CreateProductTransactionController'
+import { CreateProductTransactionDI } from './infra/data-interfaces/ProductTransaction/CreateProductTransactionDI'
+import { productTransactionRoutes } from './infra/routes/ProductTransactionRoutes';
+import * as dotenv from 'dotenv'
+
+// Carregar o arquivo .env correto com base no NODE_ENV
+const envFile = process.env.NODE_ENV === 'test' ? '.env_test' : '.env'
+dotenv.config({ path: envFile })
+
 
 const app = new FastifyAdapter()
 
-app.postFile('/upload', async(data) => {
-  try {
-    if (!data.file) {
-      throw new Error('No file uploaded')
-    }
-    
-    const filePath = path.join(__dirname, '..', '..', data.file.path)
-    const fileConverter = new ConvertFileService<ProductTransactionRow>(filePath)
-    const productTransactionRepository = new ProductTransactionRepository()
-    const createProductTransactionUseCase = new CreateProductTransactionUseCase(productTransactionRepository)
-    const convertFileToProductTransactionUsecase = new ConvertFileToProductTransactionUsecase(fileConverter)
+app.postFile('/upload', async(data) => await CreateProductTransactionDI.init(data))
 
-    const controller = new CreateProductTransactionController(
-      convertFileToProductTransactionUsecase,
-      createProductTransactionUseCase
-    )
+app.registerRoutes('/api/v1', async () => await productTransactionRoutes(app));
 
-    const result = await controller.execute()
+const port = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 3000
 
-    return result
-  } catch (error) {
-    console.error('Erro ao processar o arquivo:', error)
-    throw new Error('Erro ao processar o arquivo')
-  }
-})
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000')
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })
