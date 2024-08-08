@@ -25,16 +25,27 @@ describe('ListProductTransactionUseCase', () => {
     await productTransactionRepository.deleteAll()
   })
 
-  it('should insert records in batches and List ', async() => {
+  it('should insert records in batches and List All ', async() => {
     const convertResult = await convertFileToProductTransactionUsecase.handle()
     const transactionsToProcess = convertResult.listProductTransaction.slice(0, 50)
     await createProductTransactionUseCase.handle(transactionsToProcess)
     
     const userOrders = await lisProductTransactionUseCase.handle({})
-
     for (const userOrder of userOrders) {
       expect(userOrder.orders.length > 0).toBe(true)
     }
+  }, 10000)
+
+
+  it('should insert records in batches and Find By Order Id ', async() => {
+    const convertResult = await convertFileToProductTransactionUsecase.handle()
+    const transactionsToProcess = convertResult.listProductTransaction.slice(0, 50)
+    await createProductTransactionUseCase.handle(transactionsToProcess)
+    
+    const userOrders = await lisProductTransactionUseCase.handle({
+      idOrder: '753'
+    })
+      expect(userOrders.length > 0).toBe(true)
   }, 10000)
 
 })

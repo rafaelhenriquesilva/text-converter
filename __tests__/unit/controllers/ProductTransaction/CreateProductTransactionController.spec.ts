@@ -1,7 +1,9 @@
 import CreateProductTransactionController from "../../../../src/app/controllers/ProductTransaction/CreateProductTransactionController"
+import DeleteProductTransactionController from "../../../../src/app/controllers/ProductTransaction/DeleteProductTransactionController"
 import { ConvertFileService } from "../../../../src/app/services/file-converter/ConvertFileService"
 import { ConvertFileToProductTransactionUsecase } from "../../../../src/app/usecases/ProductTransaction/ConvertFileToProductTransactionUsecase"
 import { CreateProductTransactionUseCase } from "../../../../src/app/usecases/ProductTransaction/CreateProductTransactionUsecase"
+import { DeleteProductTransactionUseCase } from "../../../../src/app/usecases/ProductTransaction/DeleteProductTransactionUsecase"
 import { ProductTransactionRow } from "../../../../src/domain/interfaces/usecases/ProductTransaction/IConvertFileToProductTransactionUsecase"
 import { ProductTransactionRepository } from "../../../../src/infra/database/pg-promise/repositories/ProductTransactionRepository"
 import path from 'path'
@@ -45,6 +47,7 @@ describe('Create Product Transaction Controller', () => {
   })
 
   afterAll(async() => {
-    await productTransactionRepository.deleteAll()
+    const deleteUseCase = new DeleteProductTransactionUseCase(productTransactionRepository)
+    await new DeleteProductTransactionController(deleteUseCase).execute()
   })
 })

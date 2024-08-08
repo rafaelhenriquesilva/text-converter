@@ -40,9 +40,7 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     }
 
     conditionQuery = conditionQuery.slice(-3) === 'AND' ? conditionQuery.slice(0, -3) : conditionQuery
-    console.info(`conditionQuery ==`,conditionQuery)
     query += conditionQuery
-    console.info(`query ==`, query)
     const SchemaModel = await this.connection.query(query)
     return SchemaModel.map((row: any) => this.mapRowToEntity(row))
   }

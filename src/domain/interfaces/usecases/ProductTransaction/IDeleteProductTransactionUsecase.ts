@@ -1,5 +1,5 @@
 
 export interface IDeleteProductTransactionUseCase {
-    handle(id: string): Promise<void>
+    handle(): Promise<void>
 }
 

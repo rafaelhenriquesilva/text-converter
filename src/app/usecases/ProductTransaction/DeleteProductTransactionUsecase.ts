@@ -9,7 +9,7 @@ export class DeleteProductTransactionUseCase implements IDeleteProductTransactio
   ) {
     this.repository = repository
   }
-  async handle(id: string): Promise<void> {
-    await this.repository.deleteById(id)
+  async handle(): Promise<void> {
+    await this.repository.deleteAll()
   }
 }

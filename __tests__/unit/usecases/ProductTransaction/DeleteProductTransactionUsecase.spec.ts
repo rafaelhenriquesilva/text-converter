@@ -10,8 +10,7 @@ describe('DeleteProductTransactionUseCase', () => {
     usecase = new DeleteProductTransactionUseCase(productTransactionRepositoryMock)
   })
   it('DeleteProductTransactionUseCase handle', async() => {
-    const mock = createProductTransactionMock()
-    await usecase.handle(mock.id)
-    expect(productTransactionRepositoryMock.deleteById).toHaveBeenCalledTimes(1)
+    await usecase.handle()
+    expect(productTransactionRepositoryMock.deleteAll).toHaveBeenCalledTimes(1)
   })
 })
