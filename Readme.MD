@@ -61,3 +61,9 @@ docker compose up --build
 ```
     npm run migration:up
 ```
+
+### Executar os testes
+ - Garanta que as credenciais do banco de dados para testes estejam configuradas no .env_test
+```
+    npm run test
+```
