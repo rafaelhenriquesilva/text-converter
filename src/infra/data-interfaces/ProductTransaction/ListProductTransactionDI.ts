@@ -9,11 +9,11 @@ export class ListProductTransactionDI {
   static async init(data: any): Promise<IHttpResponse> {
     
     try {
-        if(data.startDate && !data.endDate || !data.startDate && data.endDate) {
-            return badRequest({message: 'parameters startDate e endDate can´t to be separeted'})
-        } else if (data.startDate && data.endDate) {
-          await listProductTransactionSchema.validate(data);
-        }
+      if(data.startDate && !data.endDate || !data.startDate && data.endDate) {
+        return badRequest({message: 'parameters startDate e endDate can´t to be separeted'})
+      } else if (data.startDate && data.endDate) {
+        await listProductTransactionSchema.validate(data)
+      }
 
 
       const productTransactionRepository = new ProductTransactionRepository()

@@ -1,6 +1,5 @@
 
 import { DeleteProductTransactionUseCase } from "../../../../src/app/usecases/ProductTransaction/DeleteProductTransactionUsecase"
-import { createProductTransactionMock } from "../../mock-entities/ProductTransaction/ProductTransactionMock"
 import { productTransactionRepositoryMock } from "../../mock-repositories/product-transaction-repository-mock"
 
 describe('DeleteProductTransactionUseCase', () => {

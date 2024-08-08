@@ -5,7 +5,7 @@ import { DeleteProductTransactionUseCase } from '../../../app/usecases/ProductTr
 import DeleteProductTransactionController from '../../../app/controllers/ProductTransaction/DeleteProductTransactionController'
 
 export class DeleteProductTransactionDI {
-  static async init(data: any): Promise<IHttpResponse> {
+  static async init(): Promise<IHttpResponse> {
 
     try {
 

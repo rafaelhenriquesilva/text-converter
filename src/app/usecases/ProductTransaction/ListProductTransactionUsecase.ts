@@ -26,7 +26,7 @@ export class ListProductTransactionUseCase implements IListProductTransactionUse
       productTransactions = await this.repository.listAll()
     }
     
-   return ProductTransactionMapper.toBusinessResponse(productTransactions)
+    return ProductTransactionMapper.toBusinessResponse(productTransactions)
   }
 
 }

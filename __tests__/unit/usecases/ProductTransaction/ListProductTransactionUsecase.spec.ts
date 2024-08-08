@@ -45,7 +45,7 @@ describe('ListProductTransactionUseCase', () => {
     const userOrders = await lisProductTransactionUseCase.handle({
       idOrder: '753'
     })
-      expect(userOrders.length > 0).toBe(true)
+    expect(userOrders.length > 0).toBe(true)
   }, 10000)
 
 })
