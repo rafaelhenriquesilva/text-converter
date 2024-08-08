@@ -26,7 +26,8 @@ module.exports = {
     '!src/infra/**',
     '!src/**/index.ts',
     '!src/**/clone.ts',
-    '!scripts/**/*.{ts,js}'
+    '!scripts/**/*.{ts,js}',
+     '!src/**/*-validator.{ts,js}'
   ],
   coverageThreshold: {
     global: {

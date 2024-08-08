@@ -7,5 +7,5 @@ import { ListProductTransactionDI } from '../data-interfaces/ProductTransaction/
 export async function productTransactionRoutes(app: FastifyAdapter) {
   app.postFile('/product-transaction/file', async(data) => await CreateProductTransactionDI.init(data))
   app.get('/product-transaction', async(data) => await ListProductTransactionDI.init(data))
-  app.delete('/product-transaction/all', async(data) => await DeleteProductTransactionDI.init(data))
+  app.delete('/product-transaction/all', async() => await DeleteProductTransactionDI.init())
 }
