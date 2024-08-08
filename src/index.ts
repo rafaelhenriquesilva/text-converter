@@ -1,6 +1,5 @@
 
 import { FastifyAdapter } from './infra/adapters/http/FastifyAdapter'
-import { CreateProductTransactionDI } from './infra/data-interfaces/ProductTransaction/CreateProductTransactionDI'
 import { productTransactionRoutes } from './infra/routes/ProductTransactionRoutes'
 import * as dotenv from 'dotenv'
 
@@ -11,9 +10,7 @@ dotenv.config({ path: envFile })
 
 const app = new FastifyAdapter()
 
-app.postFile('/upload', async(data) => await CreateProductTransactionDI.init(data))
-
-app.registerRoutes('/api/v1', async() => await productTransactionRoutes(app))
+app.registerRoutes('', async() => await productTransactionRoutes(app))
 
 const port = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 3000
 

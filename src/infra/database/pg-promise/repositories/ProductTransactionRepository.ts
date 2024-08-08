@@ -13,6 +13,40 @@ export class ProductTransactionRepository implements IProductTransactionReposito
     this.tableName = 'public.product_transaction'
   }
 
+
+  async findByCondition(input: { idOrder?: number; startDate?: string; endDate?: string }): Promise<ProductTransactionEntity[]> {
+
+    let query = `
+            SELECT
+              id,
+              client_name,
+              id_user,
+              id_product,
+              id_order,
+              product_value,
+              transaction_date,
+              created_at,
+              updated_at
+            FROM product_transaction  
+      `
+    let conditionQuery: string = ' WHERE '
+
+    if (input.idOrder) {
+      conditionQuery += ` id_order = ${input.idOrder} AND`
+    }
+
+    if (input.startDate && input.endDate) {
+      conditionQuery += ` transaction_date > '${input.startDate}' AND  transaction_date < '${input.endDate}' AND`
+    }
+
+    conditionQuery = conditionQuery.slice(-3) === 'AND' ? conditionQuery.slice(0, -3) : conditionQuery
+    console.info(`conditionQuery ==`,conditionQuery)
+    query += conditionQuery
+    console.info(`query ==`, query)
+    const SchemaModel = await this.connection.query(query)
+    return SchemaModel.map((row: any) => this.mapRowToEntity(row))
+  }
+
   async findByUniqueIdentifiers(uniqueIdentifiers: string[]): Promise<ProductTransactionEntity[]> {
     const uniqueIdentifiersStr = uniqueIdentifiers.map(unique => `'${unique}'`).join(',')
     const query = `

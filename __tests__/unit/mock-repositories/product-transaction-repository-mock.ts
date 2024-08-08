@@ -7,6 +7,7 @@ export const productTransactionRepositoryMock = {
   insert: jest.fn(),
   update: jest.fn(),
   deleteAll: jest.fn(),
-  findByUniqueIdentifiers: jest.fn()
+  findByUniqueIdentifiers: jest.fn(),
+  findByCondition: jest.fn()
 }
         

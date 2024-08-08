@@ -39,6 +39,7 @@ describe('ProductTransactionRepository Actions', () => {
 
   })
 
+
   it('ProductTransactionRepository Update', async() => {
     mockToUpdate = createProductTransactionMock()
     await repository.update({

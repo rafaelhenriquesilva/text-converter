@@ -11,7 +11,7 @@ describe('List Product Transaction Controller', () => {
     controller = new ListProductTransactionController(useCase)
   })
   it('should to request with success', async() => {
-    const result = await controller.execute()
+    const result = await controller.execute({})
 
     expect(result.statusCode).toBe(200)
   }, 15000)
