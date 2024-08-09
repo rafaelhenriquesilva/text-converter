@@ -1,6 +1,13 @@
-import Fastify, { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import Fastify, { FastifyInstance, FastifyRequest, FastifyReply, FastifySchema } from 'fastify'
 import multer from 'fastify-multer'
 import { IHttpAdapter } from '../../@shared/adapters/http/IHttpAdapter'
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
+
+interface RouteOptions {
+  schema?: FastifySchema;
+  preHandler?: any;
+}
 
 export class FastifyAdapter implements IHttpAdapter {
   private app: FastifyInstance
@@ -15,6 +22,34 @@ export class FastifyAdapter implements IHttpAdapter {
 
     // Registrar o plugin multer
     this.app.register(this.upload.contentParser)
+
+     // Registrar o plugin Swagger
+     this.app.register(swagger, {
+      swagger: {
+        info: {
+          title: 'API Documentation',
+          description: 'API documentation for the text converter service',
+          version: '1.0.1',
+        },
+        consumes: ['application/json'],
+        produces: ['application/json'],
+      }
+    });
+
+    // Registrar o plugin Swagger UI
+    this.app.register(swaggerUi, {
+      routePrefix: '/docs',
+      uiConfig: {
+        docExpansion: 'full',
+        deepLinking: false,
+      },
+      uiHooks: {
+        onRequest: function (request, reply, next) { next(); },
+        preHandler: function (request, reply, next) { next(); }
+      },
+      staticCSP: true,
+      transformStaticCSP: (header) => header,
+    });
 
     // Middleware para validar o ciclo de vida das requisições
     this.app.addHook('onRequest', (request, reply, done) => {
@@ -73,31 +108,46 @@ export class FastifyAdapter implements IHttpAdapter {
     }
   }
 
-  public postFile(path: string, handler: (data: any) => Promise<any>) {
-    this.app.post(path, { preHandler: this.upload.single('file') }, (req, reply) => this.handleRequest(handler, req, reply))
+  public postFile(path: string, handler: (data: any) => Promise<any>, options: RouteOptions = {}) {
+    this.app.post(path, {
+      preHandler: options.preHandler || this.upload.single('file'),
+      schema: options.schema
+    }, (req, reply) => this.handleRequest(handler, req, reply));
   }
-
-  public post(path: string, handler: (data: any) => Promise<any>) {
-    this.app.post(path, (req, reply) => this.handleRequest(handler, req, reply))
+  
+  public post(path: string, handler: (data: any) => Promise<any>, options: RouteOptions = {}) {
+    this.app.post(path, {
+      preHandler: options.preHandler,
+      schema: options.schema
+    }, (req, reply) => this.handleRequest(handler, req, reply));
   }
-
-  public get(path: string, handler: (data: any) => Promise<any>) {
-    this.app.get(path, (req, reply) => this.handleRequest(handler, req, reply))
+  
+  public get(path: string, handler: (data: any) => Promise<any>, options: RouteOptions = {}) {
+    this.app.get(path, {
+      preHandler: options.preHandler,
+      schema: options.schema
+    }, (req, reply) => this.handleRequest(handler, req, reply));
   }
-
-  public delete(path: string, handler: (data: any) => Promise<any>) {
-    this.app.delete(path, (req, reply) => this.handleRequest(handler, req, reply))
+  
+  public delete(path: string, handler: (data: any) => Promise<any>, options: RouteOptions = {}) {
+    this.app.delete(path, {
+      preHandler: options.preHandler,
+      schema: options.schema
+    }, (req, reply) => this.handleRequest(handler, req, reply));
   }
-
-  public put(path: string, handler: (data: any) => Promise<any>) {
-    this.app.put(path, (req, reply) => this.handleRequest(handler, req, reply))
+  
+  public put(path: string, handler: (data: any) => Promise<any>, options: RouteOptions = {}) {
+    this.app.put(path, {
+      preHandler: options.preHandler,
+      schema: options.schema
+    }, (req, reply) => this.handleRequest(handler, req, reply));
   }
 
   public listen(port: number, callback?: any) {
-    this.app.listen({ port: port, host: '0.0.0.0' }, callback)
+    this.app.listen({ port: port, host: '0.0.0.0' }, callback);
   }
 
   public registerRoutes(prefix: string, routes: (app: FastifyInstance) => void) {
-    this.app.register(routes, { prefix })
+    this.app.register(routes, { prefix });
   }
 }
