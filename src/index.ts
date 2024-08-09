@@ -15,5 +15,5 @@ app.registerRoutes('', async() => await productTransactionRoutes(app))
 const port = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 3000
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`)
+  console.log(`Server is running on port ${port}, documentation on /docs`)
 })
