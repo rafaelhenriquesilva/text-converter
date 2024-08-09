@@ -54,6 +54,11 @@ Já existem duas conexões pré-configuradas no Docker para a aplicação. No en
 npm i
 ```
 
+### Buildar a aplicação
+
+```bash
+npm run build
+```
 
 ### Iniciar o Docker
 
