@@ -48,6 +48,13 @@ A aplicação é organizada em torno dos conceitos do **DDD**, separando as resp
 
 Já existem duas conexões pré-configuradas no Docker para a aplicação. No entanto, sinta-se à vontade para modificar as variáveis nos arquivos `.env` e `.env_test` conforme necessário.
 
+### Instalar as dependências
+
+```bash
+npm i
+```
+
+
 ### Iniciar o Docker
 
 Para construir e iniciar os containers Docker, execute:
